@@ -12,12 +12,12 @@ public class Person {
     private String personLastname2;
     private String personEmail;
     private String personAddress;
-    private Integer sexId;
-    private Integer typeId;
+    private int sexId;
+    private int typeId;
     private String personBirthdate;
     private String personPhone;
     private String personActive;
-    private Integer personHasUser;
+    private boolean personHasUser;
 
     private Sex objSex;
     private Type objType;

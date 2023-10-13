@@ -24,9 +24,9 @@ public class Persona {
     @Column(name = "direccion_persona")
     private String direccionPersona;
     @Column(name = "id_sexo")
-    private Integer idSexo;
+    private int idSexo;
     @Column(name = "id_tipo")
-    private Integer idTipo;
+    private int idTipo;
     @Column(name = "fnacimiento_persona")
     private String fnacimientoPersona;
     @Column(name = "celular_persona")
@@ -34,7 +34,7 @@ public class Persona {
     @Column(name = "activo_persona")
     private String activoPersona;
     @Column(name = "btieneusuario_persona")
-    private Integer btieneusuarioPersona;
+    private boolean btieneusuarioPersona;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo", insertable = false, updatable = false)
