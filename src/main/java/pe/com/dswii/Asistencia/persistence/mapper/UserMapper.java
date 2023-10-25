@@ -14,7 +14,7 @@ public interface UserMapper {
     @Mapping(source = "idpersona", target = "personId")
     @Mapping(source = "usuarioacceso", target = "user")
     @Mapping(source = "clave", target = "password")
-    @Mapping(source = "tipousuario", target = "usertpe")
+    @Mapping(source = "tipousuario", target = "usertype")
     @Mapping(source = "activo", target = "active")
     @Mapping(source = "objTpoUsuario", target = "objuserType")
     @Mapping(source = "objPersona", target = "objPerson")

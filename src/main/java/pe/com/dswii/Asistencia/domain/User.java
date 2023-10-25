@@ -10,7 +10,7 @@ public class User {
     private Integer personId;
     private String user;
     private String password;
-    private Integer usertpe;
+    private Integer usertype;
     private String active;
 
     private UserType objuserType;
