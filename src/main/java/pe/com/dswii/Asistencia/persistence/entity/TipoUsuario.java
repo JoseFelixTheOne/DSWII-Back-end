@@ -11,10 +11,10 @@ import lombok.Setter;
 public class TipoUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tipouser")
+    @Column(name = "id_tipousuario")
     private Integer idTipouser;
-    @Column(name = "nombre_tipouser")
+    @Column(name = "nombre_tipousuario")
     private String nombreTipouser;
-    @Column(name = "activo_tipouser")
+    @Column(name = "activo_tipousuario")
     private String activoTipouser;
 }

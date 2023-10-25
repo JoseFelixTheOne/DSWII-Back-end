@@ -10,6 +10,7 @@ import pe.com.dswii.Asistencia.domain.service.PersonService;
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/person")
 public class PersonController {
     @Autowired

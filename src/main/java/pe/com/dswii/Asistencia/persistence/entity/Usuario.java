@@ -19,7 +19,7 @@ public class Usuario {
     private String usuarioacceso;
     @Column(name = "clave_usuario")
     private String clave;
-    @Column(name = "id_tipouser")
+    @Column(name = "id_tipousuario")
     private int tipousuario;
     @Column(name = "activo_usuario")
     private String activo;
@@ -29,6 +29,6 @@ public class Usuario {
     private Persona objPersona;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipouser", insertable = false, updatable = false)
+    @JoinColumn(name = "id_tipousuario", insertable = false, updatable = false)
     private TipoUsuario objTpoUsuario;
 }
