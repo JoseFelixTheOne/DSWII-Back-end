@@ -37,7 +37,7 @@ public class CourseController {
 
     @GetMapping("/careerType/{careerId}")
     public ResponseEntity<List<Course>> getByCareerId(@PathVariable("careerId") int careerId) {
-        return courseService.getByIdCurso(careerId)
+        return courseService.getByIdCarrera(careerId)
                 .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

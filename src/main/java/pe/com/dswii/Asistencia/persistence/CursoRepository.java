@@ -3,9 +3,7 @@ package pe.com.dswii.Asistencia.persistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pe.com.dswii.Asistencia.domain.Course;
-import pe.com.dswii.Asistencia.domain.Career;
 import pe.com.dswii.Asistencia.domain.repository.CourseRepository;
-import pe.com.dswii.Asistencia.domain.repository.CareerRepository;
 import pe.com.dswii.Asistencia.persistence.crud.CursoCrudRepository;
 import pe.com.dswii.Asistencia.persistence.entity.Curso;
 import pe.com.dswii.Asistencia.persistence.mapper.CourseMapper;
@@ -14,17 +12,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CursoRepository  implements CourseRepository {
+public class CursoRepository implements CourseRepository {
 
     @Autowired
     private CursoCrudRepository cursoCrudRepository;
 
     @Autowired
-    CourseMapper mapper;
+    private CourseMapper mapper;
     @Override
     public List<Course> getAll() {
         List<Curso> curso = cursoCrudRepository.findAll();
-        return mapper.toCourses(cursos);
+        return mapper.toCourses(curso);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class CursoRepository  implements CourseRepository {
 
     @Override
     public Course save(Course course) {
-        return mapper.toCourse(cursoCrudRepository.save(mapper.toCourse(course)));
+        return mapper.toCourse(cursoCrudRepository.save(mapper.toCurso(course)));
     }
 
     @Override

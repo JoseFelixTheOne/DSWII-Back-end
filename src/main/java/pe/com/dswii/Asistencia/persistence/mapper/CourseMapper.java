@@ -16,6 +16,7 @@ public interface CourseMapper {
     @Mapping(source = "creditosCurso", target = "courseCredits")
     @Mapping(source = "idCarrera", target = "careerId")
     @Mapping(source = "activoCarrera", target = "careerActive")
+    @Mapping(source = "objCarrera", target = "objCareer")
     Course toCourse(Curso curso);
 
     List<Course> toCourses(List<Curso> cursos);

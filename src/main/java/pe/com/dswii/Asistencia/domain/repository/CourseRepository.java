@@ -6,7 +6,9 @@ import java.util.Optional;
 
 public interface CourseRepository {
     List<Course> getAll();
-    Optional<Course> getType(int courseId);
+    Optional<Course> getCourse(int courseId);
+    Optional<List<Course>> getByCareerId(int careerId);
     Optional<List<Course>> getByCourseName(String name);
+    Course save (Course course);
     void delete(int courseId);
 }
