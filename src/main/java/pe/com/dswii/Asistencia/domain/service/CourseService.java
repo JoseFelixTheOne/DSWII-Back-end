@@ -23,8 +23,11 @@ public class CourseService {
     public Optional<List<Course>> getByNombreCurso(String nombre){
         return courseRepository.getByCourseName(nombre);
     }
+    public Optional<List<Course>> getByNombreCursoContaining(String nombre){
+        return courseRepository.getByCourseNameContaining(nombre);
+    }
     public Optional<List<Course>> getByIdCarrera(int idCarrera){
-        return courseRepository.getByCourseId(idCurso);
+        return courseRepository.getByCareerId(idCarrera);
     }
     public Course save(Course course){
         int courseId = course.getCourseId();
@@ -40,7 +43,7 @@ public class CourseService {
         Course curso = getCourse(courseId).map(c -> {
             BeanUtils.copyProperties(course, c);
             return c;
-        }).orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + personId));
+        }).orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + courseId));
         return courseRepository.save(course);
     }
     public boolean delete(int courseId){

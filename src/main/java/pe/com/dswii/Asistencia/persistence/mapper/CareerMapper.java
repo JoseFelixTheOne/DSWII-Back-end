@@ -18,5 +18,5 @@ public interface CareerMapper {
     List<Career> toCareer(List<Carrera> carreras);
 
     @InheritInverseConfiguration
-    Carrera toCarrera(Carrera career);
+    Carrera toCarrera(Career career);
 }

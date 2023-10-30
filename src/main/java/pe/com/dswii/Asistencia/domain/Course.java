@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Course {
-    private Integer courseId;
+    private int courseId;
     private String courseName;
     private String courseCredits;
     private int careerId;

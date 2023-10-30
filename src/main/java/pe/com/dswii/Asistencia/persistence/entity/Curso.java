@@ -12,13 +12,13 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_curso")
-    private Integer idCurso;
+    private int idCurso;
     @Column(name = "nombre_curso")
     private String nombreCurso;
     @Column(name = "creditos_curso")
     private String creditosCurso;
     @Column(name = "id_carrera")
-    private String idCarrera;
+    private int idCarrera;
     @Column(name = "activo_carrera")
     private String activoCarrera;
 
