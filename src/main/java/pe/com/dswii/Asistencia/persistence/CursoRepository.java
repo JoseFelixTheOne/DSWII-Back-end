@@ -38,6 +38,12 @@ public class CursoRepository implements CourseRepository {
     }
 
     @Override
+    public Optional<List<Course>> getByCourseNameContaining(String name) {
+        return cursoCrudRepository.findByNombreCursoConteniendo(name)
+                .map(cursos -> mapper.toCourses(cursos));
+    }
+
+    @Override
     public Optional<List<Course>> getByCareerId(int careerId) {
         return cursoCrudRepository.findByIdCarrera(careerId)
                 .map(cursos -> mapper.toCourses(cursos));

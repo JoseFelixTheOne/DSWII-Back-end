@@ -35,6 +35,13 @@ public class CourseController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/containing/coursename/{name}")
+    public ResponseEntity<List<Course>> getByCourseNameContaining(@PathVariable("name") String name){
+        return courseService.getByNombreCursoContaining(name)
+                .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping("/careerType/{careerId}")
     public ResponseEntity<List<Course>> getByCareerId(@PathVariable("careerId") int careerId) {
         return courseService.getByIdCarrera(careerId)

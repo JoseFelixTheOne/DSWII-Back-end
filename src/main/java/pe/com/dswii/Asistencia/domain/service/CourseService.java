@@ -23,6 +23,9 @@ public class CourseService {
     public Optional<List<Course>> getByNombreCurso(String nombre){
         return courseRepository.getByCourseName(nombre);
     }
+    public Optional<List<Course>> getByNombreCursoContaining(String nombre){
+        return courseRepository.getByCourseNameContaining(nombre);
+    }
     public Optional<List<Course>> getByIdCarrera(int idCarrera){
         return courseRepository.getByCareerId(idCarrera);
     }
