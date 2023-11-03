@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/menu")
 public class MenuDController {
 
@@ -55,7 +56,7 @@ public class MenuDController {
     // Eliminación de Menú
     // -> Pasa a Inactivo
     // -> Vuelve a listar los Menús activos
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<List<MenuD>> delete(@PathVariable("id") int menuId){
         menuDService.delete(menuId);
         return new ResponseEntity<>(menuDService.getAllActive(), HttpStatus.OK);

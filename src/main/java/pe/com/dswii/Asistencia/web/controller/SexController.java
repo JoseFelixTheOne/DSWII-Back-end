@@ -9,6 +9,7 @@ import pe.com.dswii.Asistencia.domain.service.SexService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/sex")
 public class SexController {
     //Inyección de dependencias
@@ -50,6 +51,7 @@ public class SexController {
     // Eliminación de Sexo
     // -> Pasa a Inactivo
     // -> Vuelve a listar los Sexos activos
+    @DeleteMapping("/{id}")
     public ResponseEntity<List<Sex>> delete(@PathVariable("id") int sexId){
         sexService.delete(sexId);
         return new ResponseEntity<>(sexService.getAllActive(), HttpStatus.OK);

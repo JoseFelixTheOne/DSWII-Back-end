@@ -10,7 +10,7 @@ import pe.com.dswii.Asistencia.domain.service.PersonService;
 import java.util.List;
 
 @RestController
-
+@CrossOrigin
 @RequestMapping("/person")
 public class PersonController {
 
@@ -23,15 +23,18 @@ public class PersonController {
     public ResponseEntity<List<Person>> getAllActive() {
         return new ResponseEntity<>(personService.getAllActive(), HttpStatus.OK);
     }
-    @GetMapping({"/inactive"})
+    @GetMapping("/inactive")
     public ResponseEntity<List<Person>> getAllInactive(){
         return new ResponseEntity<>(personService.getAllInactive(), HttpStatus.OK);
     }
-    @GetMapping({"/listAll"})
+    @GetMapping("/listAll")
     public ResponseEntity<List<Person>> getAll(){
         return new ResponseEntity<>(personService.getAll(), HttpStatus.OK);
     }
-
+    @GetMapping("/withoutuser")
+    public ResponseEntity<List<Person>> getAllWithoutUser(){
+        return new ResponseEntity<>(personService.getAllWithoutUser(), HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Person> getPerson(@PathVariable("id") int personId) {
         return personService.getPerson(personId)
@@ -77,7 +80,7 @@ public class PersonController {
         return new ResponseEntity<>(personService.update(person), HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<List<Person>> delete(@PathVariable("id") int menuId){
         personService.delete(menuId);
         return new ResponseEntity<>(personService.getAllActive(), HttpStatus.OK);

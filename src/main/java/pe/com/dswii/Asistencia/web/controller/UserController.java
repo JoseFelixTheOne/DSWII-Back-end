@@ -8,6 +8,7 @@ import pe.com.dswii.Asistencia.domain.service.UserService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 public class UserController {
 
@@ -59,9 +60,9 @@ public class UserController {
     // Eliminación de Usuario
     // -> Pasa a Inactivo
     // -> Vuelve a listar los Usuarios activos
-    @GetMapping("/delete/{id}")
-    public ResponseEntity<List<User>> delete(@PathVariable("id") int iduser){
-        userService.delete(iduser);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<User>> delete(@PathVariable("id") int userId){
+        userService.delete(userId);
         return new ResponseEntity<>(userService.getAllActive(), HttpStatus.OK);
     }
 }

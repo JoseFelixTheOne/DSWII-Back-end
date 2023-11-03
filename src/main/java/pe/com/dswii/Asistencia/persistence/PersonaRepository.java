@@ -38,6 +38,12 @@ public class PersonaRepository  implements PersonRepository {
     }
 
     @Override
+    public List<Person> getAllWithoutUser() {
+        List<Persona> personas = personaCrudRepository.findAllWithoutUser().get();
+        return mapper.toPersons(personas);
+    }
+
+    @Override
     public Optional<Person> getPerson(int personId) {
         return personaCrudRepository.findById(personId)
                 .map(persona -> mapper.toPerson(persona));

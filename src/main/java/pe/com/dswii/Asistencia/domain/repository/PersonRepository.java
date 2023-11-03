@@ -8,6 +8,7 @@ public interface PersonRepository {
     List<Person> getAll();
     List<Person> getAllActive();
     List<Person> getAllInactive();
+    List<Person> getAllWithoutUser();
     Optional<Person> getPerson(int personId);
     Optional<List<Person>> getByPersonName(String name);
     Optional<List<Person>> getByPersonEmail(String email);

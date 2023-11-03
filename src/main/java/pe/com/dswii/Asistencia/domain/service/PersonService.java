@@ -25,6 +25,9 @@ public class PersonService {
     public List<Person> getAllInactive(){
         return personRepository.getAllInactive();
     }
+    public List<Person> getAllWithoutUser(){
+        return personRepository.getAllWithoutUser();
+    }
     public Optional<Person> getPerson(int personId){
         return personRepository.getPerson(personId);
     }

@@ -1,10 +1,12 @@
 package pe.com.dswii.Asistencia.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 public class Person {
     private Integer personId;
     private String personName;
