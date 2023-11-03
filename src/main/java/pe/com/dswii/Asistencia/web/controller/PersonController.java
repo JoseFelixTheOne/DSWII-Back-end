@@ -1,9 +1,9 @@
 package pe.com.dswii.Asistencia.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.com.dswii.Asistencia.domain.MenuD;
 import pe.com.dswii.Asistencia.domain.Person;
 import pe.com.dswii.Asistencia.domain.service.PersonService;
 
@@ -13,11 +13,22 @@ import java.util.List;
 
 @RequestMapping("/person")
 public class PersonController {
-    @Autowired
-    private PersonService personService;
+
+    private final PersonService personService;
+    public PersonController (PersonService personService){
+        this.personService = personService;
+    }
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<Person>> getAll() {
+    public ResponseEntity<List<Person>> getAllActive() {
+        return new ResponseEntity<>(personService.getAllActive(), HttpStatus.OK);
+    }
+    @GetMapping({"/inactive"})
+    public ResponseEntity<List<Person>> getAllInactive(){
+        return new ResponseEntity<>(personService.getAllInactive(), HttpStatus.OK);
+    }
+    @GetMapping({"/listAll"})
+    public ResponseEntity<List<Person>> getAll(){
         return new ResponseEntity<>(personService.getAll(), HttpStatus.OK);
     }
 
@@ -36,7 +47,7 @@ public class PersonController {
     }
 
     @GetMapping("/personemail/{email}")
-    public ResponseEntity<Person> getByPersonEmail(@PathVariable("email") String email) {
+    public ResponseEntity<List<Person>> getByPersonEmail(@PathVariable("email") String email) {
         return personService.getByCorreoPersona(email)
                 .map(p -> new ResponseEntity<>(p, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -66,8 +77,9 @@ public class PersonController {
         return new ResponseEntity<>(personService.update(person), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") int personId){
-        return new ResponseEntity(personService.delete(personId) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<List<Person>> delete(@PathVariable("id") int menuId){
+        personService.delete(menuId);
+        return new ResponseEntity<>(personService.getAllActive(), HttpStatus.OK);
     }
 }

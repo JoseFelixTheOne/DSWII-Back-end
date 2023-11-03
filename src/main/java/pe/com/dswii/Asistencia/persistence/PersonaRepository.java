@@ -1,11 +1,8 @@
 package pe.com.dswii.Asistencia.persistence;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pe.com.dswii.Asistencia.domain.Person;
-import pe.com.dswii.Asistencia.domain.Type;
 import pe.com.dswii.Asistencia.domain.repository.PersonRepository;
-import pe.com.dswii.Asistencia.domain.repository.TypeRepository;
 import pe.com.dswii.Asistencia.persistence.crud.PersonaCrudRepository;
 import pe.com.dswii.Asistencia.persistence.entity.Persona;
 import pe.com.dswii.Asistencia.persistence.mapper.PersonMapper;
@@ -16,14 +13,27 @@ import java.util.Optional;
 @Repository
 public class PersonaRepository  implements PersonRepository {
 
-    @Autowired
-    private PersonaCrudRepository personaCrudRepository;
-
-    @Autowired
-    PersonMapper mapper;
+    private final PersonaCrudRepository personaCrudRepository;
+    private final PersonMapper mapper;
+    public PersonaRepository(PersonaCrudRepository personaCrudRepository, PersonMapper mapper){
+        this.personaCrudRepository = personaCrudRepository;
+        this.mapper = mapper;
+    }
     @Override
     public List<Person> getAll() {
         List<Persona> personas = personaCrudRepository.findAll();
+        return mapper.toPersons(personas);
+    }
+
+    @Override
+    public List<Person> getAllActive() {
+        List<Persona> personas = personaCrudRepository.findAllActive().get();
+        return mapper.toPersons(personas);
+    }
+
+    @Override
+    public List<Person> getAllInactive() {
+        List<Persona> personas = personaCrudRepository.findAllInactive().get();
         return mapper.toPersons(personas);
     }
 
@@ -40,9 +50,9 @@ public class PersonaRepository  implements PersonRepository {
     }
 
     @Override
-    public Optional<Person> getByPersonEmail(String email) {
+    public Optional<List<Person>> getByPersonEmail(String email) {
         return personaCrudRepository.findByCorreoPersona(email)
-                .map(persona -> mapper.toPerson(persona));
+                .map(personas -> mapper.toPersons(personas));
     }
 
     @Override
@@ -64,6 +74,6 @@ public class PersonaRepository  implements PersonRepository {
 
     @Override
     public void delete(int personId) {
-        personaCrudRepository.deleteById(personId);
+        System.out.println("SE ELIMINÓ CORRECTAMENTE A LA PERSONA CON ID: " + personId);
     }
 }

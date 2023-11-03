@@ -12,11 +12,19 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-
+    //Autowired eliminado
+    private final UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     public List<User> getAll(){
         return userRepository.getAll();
+    }
+    public List<User> getAllActive(){
+        return userRepository.getAllActive();
+    }
+    public List<User> getAllInactive(){
+        return userRepository.getAllInactive();
     }
 
     public Optional<User> getUser(int iduser) {
