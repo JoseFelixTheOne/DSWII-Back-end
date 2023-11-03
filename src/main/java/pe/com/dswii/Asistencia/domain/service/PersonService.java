@@ -11,11 +11,19 @@ import java.util.Optional;
 
 @Service
 public class PersonService {
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+    public PersonService(PersonRepository personRepository){
+        this.personRepository = personRepository;
+    }
 
     public List<Person> getAll(){
         return personRepository.getAll();
+    }
+    public List<Person> getAllActive(){
+        return personRepository.getAllActive();
+    }
+    public List<Person> getAllInactive(){
+        return personRepository.getAllInactive();
     }
     public Optional<Person> getPerson(int personId){
         return personRepository.getPerson(personId);
@@ -23,12 +31,11 @@ public class PersonService {
     public Optional<List<Person>> getByNombrePersona(String nombre){
         return personRepository.getByPersonName(nombre);
     }
-    public Optional<Person> getByCorreoPersona(String correo){
+    public Optional<List<Person>> getByCorreoPersona(String correo){
         return personRepository.getByPersonEmail(correo);
     }
     public Optional<List<Person>> getByIdSexo(int idSexo){
         return personRepository.getBySexId(idSexo);
-
     }
     public Optional<List<Person>> getByIdTipo(int idTipo){
         return personRepository.getByTypeId(idTipo);
@@ -50,13 +57,14 @@ public class PersonService {
         }).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + personId));
         return personRepository.save(person);
     }
-    public boolean delete(int personId){
-        if(getPerson(personId).isPresent()){
-            personRepository.delete(personId);
-            return true;
+    public void delete(int personId){
+        if(getPerson(personId).isPresent()) {
+            Person person = personRepository.getPerson(personId).get();
+            person.setPersonActive("I");
+            personRepository.save(person);
         }
         else {
-            return false;
+            System.out.println("ERROR 404 : PERSON NOT FOUND");
         }
     }
 }

@@ -27,6 +27,18 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
+    public List<User> getAllActive() {
+        List<Usuario> usuarios = usuarioCrudRepository.findAllActive().get();
+        return mapper.toUsers(usuarios);
+    }
+
+    @Override
+    public List<User> getAllInactive() {
+        List<Usuario> usuarios = usuarioCrudRepository.findAllInactive().get();
+        return mapper.toUsers(usuarios);
+    }
+
+    @Override
     public Optional<User> getUser(int iduser) {
         return usuarioCrudRepository.findById(iduser).map(usuario -> mapper.toUser(usuario));
     }

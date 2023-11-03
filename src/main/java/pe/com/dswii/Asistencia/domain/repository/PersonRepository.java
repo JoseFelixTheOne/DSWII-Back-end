@@ -6,9 +6,11 @@ import java.util.Optional;
 
 public interface PersonRepository {
     List<Person> getAll();
+    List<Person> getAllActive();
+    List<Person> getAllInactive();
     Optional<Person> getPerson(int personId);
     Optional<List<Person>> getByPersonName(String name);
-    Optional<Person> getByPersonEmail(String email);
+    Optional<List<Person>> getByPersonEmail(String email);
     Optional<List<Person>> getBySexId(int sexId);
     Optional<List<Person>> getByTypeId(int typeId);
     Person save (Person person);
