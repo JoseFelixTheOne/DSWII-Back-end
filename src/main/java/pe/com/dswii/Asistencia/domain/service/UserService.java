@@ -2,20 +2,24 @@ package pe.com.dswii.Asistencia.domain.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pe.com.dswii.Asistencia.domain.Person;
 import pe.com.dswii.Asistencia.domain.User;
+import pe.com.dswii.Asistencia.domain.repository.PersonRepository;
 import pe.com.dswii.Asistencia.domain.repository.UserRepository;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
-    //Autowired eliminado
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
+    private final PersonRepository personRepository;
+    private BCryptPasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, PersonRepository personRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.personRepository = personRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     public List<User> getAll(){
         return userRepository.getAll();
@@ -32,10 +36,26 @@ public class UserService {
     }
 
     public Optional<User> getByUsuarioaccesoAndClave(String user, String password){
-        return userRepository.getByUsuarioaccesoAndClave(user, password);
+        User u = userRepository.getByUsuarioacceso(user).get();
+        if(passwordEncoder.matches(password, u.getPassword())){
+            return userRepository.getByUsuarioaccesoAndClave(user, u.getPassword());
+        }
+        else {
+            return null;
+        }
     }
     public User save(User user) {
-        return  userRepository.save(user);
+        int personId = user.getPersonId();
+        Person person = personRepository.getPerson(personId).get();
+        person.setPersonHasUser(true);
+        personRepository.save(person);
+
+        String encryptedPsw = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPsw);
+
+        user.setActive("A");
+
+        return userRepository.save(user);
     }
 
     public User update(User user) {
@@ -47,12 +67,14 @@ public class UserService {
         return userRepository.save(usuario);
     }
 
-    public boolean delete(int iduser) {
-        if (getUser(iduser).isPresent()) {
-            userRepository.delete(iduser);
-            return true;
-        }else {
-            return  false;
+    public void delete(int userId) {
+        if (getUser(userId).isPresent()) {
+            User user = userRepository.getUser(userId).get();
+            user.setActive("I");
+            userRepository.save(user);
+        }
+        else {
+            System.out.println("ERROR 404 : USER NOT FOUND");
         }
     }
 }

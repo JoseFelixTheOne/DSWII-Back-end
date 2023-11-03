@@ -1,6 +1,5 @@
 package pe.com.dswii.Asistencia.persistence;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pe.com.dswii.Asistencia.domain.User;
 import pe.com.dswii.Asistencia.domain.repository.UserRepository;
@@ -14,11 +13,12 @@ import java.util.Optional;
 @Repository
 public class UsuarioRepository implements UserRepository {
 
-    @Autowired
-    private UsuarioCrudRepository usuarioCrudRepository;
-
-    @Autowired
-    private UserMapper mapper;
+    private final UsuarioCrudRepository usuarioCrudRepository;
+    private final UserMapper mapper;
+    public UsuarioRepository(UsuarioCrudRepository usuarioCrudRepository, UserMapper mapper){
+        this.usuarioCrudRepository = usuarioCrudRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<User> getAll() {
@@ -50,6 +50,12 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> getByUsuarioacceso(String user) {
+        return usuarioCrudRepository.getByUsuarioacceso(user)
+                .map(u -> mapper.toUser(u));
+    }
+
+    @Override
     public User save(User user) {
         Usuario usuario = mapper.toUsuario(user);
         return mapper.toUser(usuarioCrudRepository.save(usuario));
@@ -57,6 +63,6 @@ public class UsuarioRepository implements UserRepository {
 
     @Override
     public void delete(int iduser) {
-        usuarioCrudRepository.deleteById(iduser);
+        System.out.println("SE ELIMINÓ CORRECTAMENTE AL USUARIO CON ID: " + iduser);
     }
 }

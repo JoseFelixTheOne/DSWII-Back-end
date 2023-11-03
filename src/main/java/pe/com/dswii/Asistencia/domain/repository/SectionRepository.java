@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface SectionRepository {
     List<Section> getAll();
+    List<Section> getAllActive();
+    List<Section> getAllInactive();
     Optional<List<Section>> getBySectionName(String name);
     Optional<Section> getSection(int sectionId);
     Section save(Section section);

@@ -13,11 +13,18 @@ import java.util.Optional;
 @Service
 public class SectionService {
 
-    @Autowired
-    private SectionRepository sectionRepository;
-
+    private final SectionRepository sectionRepository;
+    public SectionService(SectionRepository sectionRepository){
+        this.sectionRepository = sectionRepository;
+    }
     public List<Section> getAll() {
         return sectionRepository.getAll();
+    }
+    public List<Section> getAllActive() {
+        return sectionRepository.getAllActive();
+    }
+    public List<Section> getAllInactive() {
+        return sectionRepository.getAllInactive();
     }
     public Optional<List<Section>> getByNombreSeccion(String nombre) {
         return sectionRepository.getBySectionName(nombre);
@@ -26,27 +33,25 @@ public class SectionService {
         return sectionRepository.getSection(sectionId);
     }
     public Section save(Section section){
-        int sectionId = section.getSectionId();
-        Section seccion = getSection(sectionId).map(s -> {
-            BeanUtils.copyProperties(section, s);
-            return s;
-        }).orElseThrow(() -> new EntityNotFoundException("Section not found with ID : " + sectionId));
-        return sectionRepository.save(seccion);
+        section.setSectionActive("A");
+        return sectionRepository.save(section);
     }
     public Section update(Section section) {
         int sectionId = section.getSectionId();
         Section seccion = getSection(sectionId).map(s -> {
             BeanUtils.copyProperties(section, s);
             return s;
-        }).orElseThrow(() -> new EntityNotFoundException("Section not found with ID : " + sectionId));
-        return sectionRepository.save(seccion);
+        }).orElseThrow(() -> new EntityNotFoundException("Sex not found with ID: " + sectionId));
+        return sectionRepository.save(section);
     }
-    public boolean delete(int sectionId) {
-        if(getSection(sectionId).isPresent()) {
-            sectionRepository.delete(sectionId);
-            return true;
-        }else {
-            return false;
+    public void delete(int sectionId) {
+        if(getSection(sectionId).isPresent()){
+            Section section = sectionRepository.getSection(sectionId).get();
+            section.setSectionActive("I");;
+            sectionRepository.save(section);
+        }
+        else{
+            System.out.println("ERROR 404 : SEX NOT FOUND");
         }
     }
 }

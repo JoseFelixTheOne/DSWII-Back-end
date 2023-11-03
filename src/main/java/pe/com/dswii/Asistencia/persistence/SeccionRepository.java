@@ -14,15 +14,27 @@ import java.util.Optional;
 @Repository
 public class SeccionRepository implements SectionRepository {
 
-    @Autowired
-    private SeccionCrudRepository seccionCrudRepository;
-
-    @Autowired
-    SectionMapper mapper;
+    private final SeccionCrudRepository seccionCrudRepository;
+    private final SectionMapper mapper;
+    public SeccionRepository(SeccionCrudRepository seccionCrudRepository, SectionMapper mapper){
+        this.seccionCrudRepository = seccionCrudRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<Section> getAll() {
         List<Seccion> secciones = seccionCrudRepository.findAll();
+        return mapper.toSections(secciones);
+    }
+    @Override
+    public List<Section> getAllActive() {
+        List<Seccion> secciones = seccionCrudRepository.findAllActive().get();
+        return mapper.toSections(secciones);
+    }
+
+    @Override
+    public List<Section> getAllInactive() {
+        List<Seccion> secciones = seccionCrudRepository.findAllInactive().get();
         return mapper.toSections(secciones);
     }
 
@@ -45,6 +57,6 @@ public class SeccionRepository implements SectionRepository {
 
     @Override
     public void delete(int sectionId) {
-        seccionCrudRepository.deleteById(sectionId);
+        System.out.println("SE ELIMINÓ CORRECTAMENTE LA SECCIÓN CON ID: " + sectionId);
     }
 }

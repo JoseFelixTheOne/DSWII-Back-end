@@ -5,7 +5,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pe.com.dswii.Asistencia.domain.User;
 import pe.com.dswii.Asistencia.persistence.entity.Usuario;
-
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {UserTypeMapper.class, PersonMapper.class})

@@ -10,6 +10,7 @@ public interface UserRepository {
     List<User> getAllInactive();
     Optional<User> getUser(int iduser);
     Optional<User> getByUsuarioaccesoAndClave(String user, String password);
+    Optional<User> getByUsuarioacceso(String user);
     User save(User user);
     void delete(int iduser);
 }

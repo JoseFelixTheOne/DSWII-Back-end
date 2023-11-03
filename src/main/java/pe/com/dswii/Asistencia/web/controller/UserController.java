@@ -1,6 +1,5 @@
 package pe.com.dswii.Asistencia.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +51,7 @@ public class UserController {
     public ResponseEntity<User> save(@RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
-    //Actulización de Usuario
+    //Actualización de Usuario
     @PutMapping("/")
     public ResponseEntity<User> update(@RequestBody User user) {
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
