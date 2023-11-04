@@ -26,6 +26,18 @@ public class TipoRepository implements TypeRepository {
     }
 
     @Override
+    public List<Type> getAllActive() {
+        List<Tipo> tipos = tipoCrudRepository.findAllActive().get();
+        return mapper.toTypes(tipos);
+    }
+
+    @Override
+    public List<Type> getAllInactive() {
+        List<Tipo> tipos = tipoCrudRepository.findAllInactive().get();
+        return mapper.toTypes(tipos);
+    }
+
+    @Override
     public Optional<Type> getType(int typeId) {
         return tipoCrudRepository.findById(typeId).map(tipo -> mapper.toType(tipo));
     }
