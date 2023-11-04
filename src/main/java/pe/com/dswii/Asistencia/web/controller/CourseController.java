@@ -10,57 +10,61 @@ import pe.com.dswii.Asistencia.domain.service.CourseService;
 import java.util.List;
 
 @RestController
-
+@CrossOrigin
 @RequestMapping("/course")
 public class CourseController {
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     @GetMapping({"", "/"})
+    public ResponseEntity<List<Course>> getAllActive() {
+        return new ResponseEntity<>(courseService.getAllActive(), HttpStatus.OK);
+    }
+    @GetMapping({"/inactive"})
+    public ResponseEntity<List<Course>> getAllInactive() {
+        return new ResponseEntity<>(courseService.getAllInactive(), HttpStatus.OK);
+    }
+    @GetMapping({"/listall"})
     public ResponseEntity<List<Course>> getAll() {
         return new ResponseEntity<>(courseService.getAll(), HttpStatus.OK);
     }
-
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}"})
     public ResponseEntity<Course> getCourse(@PathVariable("id") int courseId) {
         return courseService.getCourse(courseId)
                 .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
     @GetMapping("/coursename/{name}")
-    public ResponseEntity<List<Course>> getByCourseName(@PathVariable("name") String name) {
+    public ResponseEntity<List<Course>> getByCourseName(@PathVariable("name") String name){
         return courseService.getByNombreCurso(name)
                 .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-    @GetMapping("/containing/coursename/{name}")
-    public ResponseEntity<List<Course>> getByCourseNameContaining(@PathVariable("name") String name){
-        return courseService.getByNombreCursoContaining(name)
+    @GetMapping("/careerid/{id}")
+    public ResponseEntity<List<Course>> getByCarrerId(@PathVariable("id") int id){
+        return courseService.getByIdCarrera(id)
                 .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-    @GetMapping("/careerType/{careerId}")
-    public ResponseEntity<List<Course>> getByCareerId(@PathVariable("careerId") int careerId) {
-        return courseService.getByIdCarrera(careerId)
+    @GetMapping("/credits/{cant}")
+    public ResponseEntity<List<Course>> getByCourseCredits(@PathVariable("cant") String cant) {
+        return courseService.getByCreditosCurso(cant)
                 .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
     @PostMapping("/")
     public ResponseEntity<Course> save(@RequestBody Course course) {
         return new ResponseEntity<>(courseService.save(course), HttpStatus.CREATED);
     }
-
     @PutMapping("/")
-    public ResponseEntity<Course> update(@RequestBody Course course){
+    public ResponseEntity<Course> update(@RequestBody Course course) {
         return new ResponseEntity<>(courseService.update(course), HttpStatus.OK);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") int courseId){
-        return new ResponseEntity(courseService.delete(courseId) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<List<Course>> delete(@PathVariable("id") int courseId) {
+        courseService.delete(courseId);
+        return new ResponseEntity<>(courseService.getAllActive(),HttpStatus.OK);
     }
 }

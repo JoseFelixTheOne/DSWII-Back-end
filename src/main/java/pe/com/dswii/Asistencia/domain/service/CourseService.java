@@ -11,11 +11,19 @@ import java.util.Optional;
 
 @Service
 public class CourseService {
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
+    public CourseService(CourseRepository courseRepository){
+        this.courseRepository = courseRepository;
+    }
 
     public List<Course> getAll(){
         return courseRepository.getAll();
+    }
+    public List<Course> getAllActive(){
+        return courseRepository.getAllActive();
+    }
+    public List<Course> getAllInactive(){
+        return courseRepository.getAllInactive();
     }
     public Optional<Course> getCourse(int courseId){
         return courseRepository.getCourse(courseId);
@@ -23,8 +31,8 @@ public class CourseService {
     public Optional<List<Course>> getByNombreCurso(String nombre){
         return courseRepository.getByCourseName(nombre);
     }
-    public Optional<List<Course>> getByNombreCursoContaining(String nombre){
-        return courseRepository.getByCourseNameContaining(nombre);
+    public Optional<List<Course>> getByCreditosCurso(String credito){
+        return courseRepository.getByCourseCredit(credito);
     }
     public Optional<List<Course>> getByIdCarrera(int idCarrera){
         return courseRepository.getByCareerId(idCarrera);
@@ -46,13 +54,14 @@ public class CourseService {
         }).orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + courseId));
         return courseRepository.save(course);
     }
-    public boolean delete(int courseId){
+    public void delete(int courseId){
         if(getCourse(courseId).isPresent()){
-            courseRepository.delete(courseId);
-            return true;
+            Course course = courseRepository.getCourse(courseId).get();
+            course.setCareerActive("I");
+            courseRepository.save(course);
         }
         else {
-            return false;
+            System.out.println("ERROR 404 : COURSE NOT FOUND");
         }
     }
 }

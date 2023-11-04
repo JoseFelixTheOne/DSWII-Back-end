@@ -15,7 +15,7 @@ public interface CareerMapper {
     @Mapping(source = "activoCarrera", target = "careerActive")
     Career toCareer(Carrera carrera);
 
-    List<Career> toCareer(List<Carrera> carreras);
+    List<Career> toCareers(List<Carrera> carreras);
 
     @InheritInverseConfiguration
     Carrera toCarrera(Career career);
