@@ -13,7 +13,6 @@ import java.util.Optional;
 public class UserTypeService {
 
     private final UserTypeRepository userTypeRepository;
-
     public UserTypeService(UserTypeRepository userTypeRepository) {
         this.userTypeRepository = userTypeRepository;
     }
@@ -24,16 +23,13 @@ public class UserTypeService {
     public List<UserType> getAllActive(){return userTypeRepository.getAllActive();}
     public List<UserType> getAllInactive(){return userTypeRepository.getAllInactive();}
     public Optional<UserType> getUserType(int userTypeId) {
-        UserType utipo = userTypeRepository.getUserType(userTypeId).get();
-        if(utipo.getActive().equals("A")){
-            return userTypeRepository.getUserType(userTypeId);
-        }
-        else{
-            return userTypeRepository.getUserType(0);
-        }
+        return userTypeRepository.getUserType(userTypeId);
     }
-
+    public Optional<List<UserType>> getByNombreUsuarioTipo(String nombre) {
+        return userTypeRepository.getByUserTypeName(nombre);
+    }
     public UserType save(UserType userType) {
+        userType.setActive("A");
         return userTypeRepository.save(userType);
     }
 
@@ -51,7 +47,7 @@ public class UserTypeService {
             utipo.setActive("I");
             userTypeRepository.save(utipo);
         }else {
-            System.out.println("ERROR 404 : MENU NOT FOUND");
+            System.out.println("ERROR 404 : USERTYPE NOT FOUND");
         }
     }
 }
