@@ -14,15 +14,28 @@ import java.util.Optional;
 @Repository
 public class CursoRepository implements CourseRepository {
 
-    @Autowired
-    private CursoCrudRepository cursoCrudRepository;
-
-    @Autowired
-    private CourseMapper mapper;
+    private final CursoCrudRepository cursoCrudRepository;
+    private final CourseMapper mapper;
+    public CursoRepository(CursoCrudRepository cursoCrudRepository, CourseMapper mapper) {
+        this.cursoCrudRepository = cursoCrudRepository;
+        this.mapper = mapper;
+    }
     @Override
     public List<Course> getAll() {
-        List<Curso> curso = cursoCrudRepository.findAll();
-        return mapper.toCourses(curso);
+        List<Curso> cursos = cursoCrudRepository.findAll();
+        return mapper.toCourses(cursos);
+    }
+
+    @Override
+    public List<Course> getAllActive() {
+        List<Curso> cursos = cursoCrudRepository.findAllActive().get();
+        return mapper.toCourses(cursos);
+    }
+
+    @Override
+    public List<Course> getAllInactive() {
+        List<Curso> cursos = cursoCrudRepository.findAllInactive().get();
+        return mapper.toCourses(cursos);
     }
 
     @Override
@@ -32,20 +45,20 @@ public class CursoRepository implements CourseRepository {
     }
 
     @Override
+    public Optional<List<Course>> getByCareerId(int careerId) {
+        return cursoCrudRepository.findByIdCarrera(careerId)
+                .map(cursos -> mapper.toCourses(cursos));
+    }
+
+    @Override
     public Optional<List<Course>> getByCourseName(String name) {
         return cursoCrudRepository.findByNombreCurso(name)
                 .map(cursos -> mapper.toCourses(cursos));
     }
 
     @Override
-    public Optional<List<Course>> getByCourseNameContaining(String name) {
-        return cursoCrudRepository.findByNombreCursoConteniendo(name)
-                .map(cursos -> mapper.toCourses(cursos));
-    }
-
-    @Override
-    public Optional<List<Course>> getByCareerId(int careerId) {
-        return cursoCrudRepository.findByIdCarrera(careerId)
+    public Optional<List<Course>> getByCourseCredit(String credit) {
+        return cursoCrudRepository.findByCreditos(credit)
                 .map(cursos -> mapper.toCourses(cursos));
     }
 
@@ -56,6 +69,6 @@ public class CursoRepository implements CourseRepository {
 
     @Override
     public void delete(int courseId) {
-        cursoCrudRepository.deleteById(courseId);
+        System.out.println("SE ELIMINÓ CORRECTAMENTE AL CURSO CON ID: " + courseId);
     }
 }
