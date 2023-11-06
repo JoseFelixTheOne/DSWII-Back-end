@@ -38,13 +38,8 @@ public class CourseService {
         return courseRepository.getByCareerId(idCarrera);
     }
     public Course save(Course course){
-        int courseId = course.getCourseId();
-        Course curso = getCourse(courseId).map(c -> {
-            BeanUtils.copyProperties(course, c);
-            return c;
-        }).orElseThrow(() -> new EntityNotFoundException("Course not found with ID : " + courseId));
-
-        return courseRepository.save(curso);
+        course.setCareerActive("A");
+        return courseRepository.save(course);
     }
     public Course update(Course course){
         int courseId = course.getCourseId();

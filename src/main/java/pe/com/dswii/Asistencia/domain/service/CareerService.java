@@ -33,12 +33,8 @@ public class CareerService {
         return careerRepository.getByCareerName(nombre);
     }
     public Career save(Career career){
-        int careerId = career.getCareerId();
-        Career carrera = getCareer(careerId).map(c -> {
-            BeanUtils.copyProperties(career, c);
-            return c;
-        }).orElseThrow(() -> new EntityNotFoundException("Career not found with ID : " + careerId));
-        return careerRepository.save(carrera);
+        career.setCareerActive("A");
+        return careerRepository.save(career);
     }
 
     public Career update(Career career){
