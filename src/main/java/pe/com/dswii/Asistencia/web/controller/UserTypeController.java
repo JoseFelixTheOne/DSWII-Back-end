@@ -3,6 +3,7 @@ package pe.com.dswii.Asistencia.web.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.com.dswii.Asistencia.domain.Career;
 import pe.com.dswii.Asistencia.domain.MenuD;
 import pe.com.dswii.Asistencia.domain.UserType;
 import pe.com.dswii.Asistencia.domain.service.UserTypeService;
@@ -37,6 +38,13 @@ public class UserTypeController {
     public ResponseEntity<UserType> getUserType(@PathVariable("id") int userTypeId) {
         return userTypeService.getUserType(userTypeId)
                 .map(type -> new ResponseEntity<>(type, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/usertypename/{name}")
+    public ResponseEntity<List<UserType>> getByUserTypeName(@PathVariable("name") String name) {
+        return userTypeService.getByNombreUsuarioTipo(name)
+                .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
