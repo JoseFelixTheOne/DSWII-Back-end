@@ -26,6 +26,18 @@ public class TipoUsuarioRepository implements UserTypeRepository {
     }
 
     @Override
+    public List<UserType> getAllActive() {
+        List<TipoUsuario> utipo = tipoUsuarioCrudRepository.findAllActive().get();
+        return mapper.toUserTypes(utipo);
+    }
+
+    @Override
+    public List<UserType> getAllInactive() {
+        List<TipoUsuario> utipo = tipoUsuarioCrudRepository.findAllInactive().get();
+        return mapper.toUserTypes(utipo);
+    }
+
+    @Override
     public Optional<UserType> getUserType(int userTypeId) {
         return tipoUsuarioCrudRepository.findById(userTypeId).map(tipo -> mapper.toUserType(tipo));
     }
