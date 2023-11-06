@@ -10,6 +10,7 @@ import pe.com.dswii.Asistencia.domain.service.SectionService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/section")
 public class SectionController {
     //Inyección de dependencias

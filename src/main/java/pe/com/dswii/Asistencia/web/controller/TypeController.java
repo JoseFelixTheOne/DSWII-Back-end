@@ -24,9 +24,13 @@ public class TypeController {
         return new ResponseEntity<>(typeService.getAllActive(), HttpStatus.OK);
     }
 
-    @GetMapping({"/inactive"})
+    @GetMapping("/inactive")
     public ResponseEntity<List<Type>> getAllInactive(){
         return new ResponseEntity<>(typeService.getAllInactive(), HttpStatus.OK);
+    }
+    @GetMapping("/listAll")
+    public ResponseEntity<List<Type>> getAll(){
+        return new ResponseEntity<>(typeService.getAll(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Type> getType(@PathVariable("id") int typeId){
