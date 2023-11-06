@@ -37,11 +37,7 @@ public class SectionService {
         return sectionRepository.save(section);
     }
     public Section update(Section section) {
-        int sectionId = section.getSectionId();
-        Section seccion = getSection(sectionId).map(s -> {
-            BeanUtils.copyProperties(section, s);
-            return s;
-        }).orElseThrow(() -> new EntityNotFoundException("Sex not found with ID: " + sectionId));
+        section.setSectionActive("A");
         return sectionRepository.save(section);
     }
     public void delete(int sectionId) {

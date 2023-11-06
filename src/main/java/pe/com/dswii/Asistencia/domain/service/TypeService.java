@@ -31,6 +31,7 @@ public class TypeService {
         }
     }
     public Type save(Type type){
+        type.setTypeActive("A");
         return typeRepository.save(type);
     }
     public Type update(Type type){

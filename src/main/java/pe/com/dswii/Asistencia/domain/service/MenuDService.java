@@ -38,6 +38,7 @@ public class MenuDService {
         }
     }
     public MenuD save(MenuD menuD){
+        menuD.setMenuActive("A");
         return menuDRepository.save(menuD);
     }
 
@@ -47,7 +48,7 @@ public class MenuDService {
             BeanUtils.copyProperties(menuD, m);
             return m;
         }).orElseThrow(() -> new EntityNotFoundException("Menu not found with ID: " + menuId));
-        return menuDRepository.save(menuD);
+        return menuDRepository.save(menu);
     }
     public void delete(int menuId){
         if(getMenuD(menuId).isPresent()) {

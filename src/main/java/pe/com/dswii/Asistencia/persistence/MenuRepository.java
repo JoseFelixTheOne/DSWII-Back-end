@@ -13,8 +13,8 @@ import java.util.Optional;
 @Repository
 public class MenuRepository implements MenuDRepository {
 
-    private MenuCrudRepository menuCrudRepository;
-    private MenuDMapper mapper;
+    private final MenuCrudRepository menuCrudRepository;
+    private final MenuDMapper mapper;
     public MenuRepository (MenuCrudRepository menuCrudRepository, MenuDMapper mapper){
         this.menuCrudRepository = menuCrudRepository;
         this.mapper = mapper;
@@ -46,7 +46,7 @@ public class MenuRepository implements MenuDRepository {
 
     @Override
     public MenuD save(MenuD menuD) {
-        return mapper.toMenuD((menuCrudRepository.save(mapper.toMenu(menuD))));
+        return mapper.toMenuD(menuCrudRepository.save(mapper.toMenu(menuD)));
     }
 
     @Override

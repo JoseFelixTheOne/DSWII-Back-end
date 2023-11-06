@@ -41,7 +41,7 @@ public class SexController {
     //Registro de Sexo
     @PostMapping("/")
     public ResponseEntity<Sex> save(@RequestBody Sex sex){
-        return new ResponseEntity<>(sexService.save(sex), HttpStatus.OK);
+        return new ResponseEntity<>(sexService.save(sex), HttpStatus.CREATED);
     }
     //Actualización de Sexo
     @PutMapping("/")

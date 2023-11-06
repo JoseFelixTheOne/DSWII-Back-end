@@ -46,7 +46,7 @@ public class MenuDController {
     //Registro de Menú
     @PostMapping("/")
     public ResponseEntity<MenuD> save(@RequestBody MenuD menuD){
-        return new ResponseEntity<>(menuDService.save(menuD), HttpStatus.OK);
+        return new ResponseEntity<>(menuDService.save(menuD), HttpStatus.CREATED);
     }
     //Actulización de Menú
     @PutMapping("/")
