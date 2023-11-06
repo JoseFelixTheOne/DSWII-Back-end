@@ -43,6 +43,12 @@ public class TipoUsuarioRepository implements UserTypeRepository {
     }
 
     @Override
+    public Optional<List<UserType>> getByUserTypeName(String name) {
+        return tipoUsuarioCrudRepository.findByNombreUsuarioTipo(name)
+                .map(tipoUsuarios -> mapper.toUserTypes(tipoUsuarios));
+    }
+
+    @Override
     public UserType save(UserType userType) {
         TipoUsuario tipo = mapper.toTipoUsuario(userType);
         return mapper.toUserType(tipoUsuarioCrudRepository.save(tipo));
@@ -50,6 +56,6 @@ public class TipoUsuarioRepository implements UserTypeRepository {
 
     @Override
     public void delete(int userTypeId){
-        tipoUsuarioCrudRepository.deleteById(userTypeId);
+        System.out.println("SE ELIMINÓ CORRECTAMENTE EL TIPO DE USUARIO CON ID: " + userTypeId);
     }
 }
