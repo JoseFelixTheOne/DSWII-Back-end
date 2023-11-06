@@ -47,6 +47,7 @@ public class UserTypeController {
                 .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
     @PostMapping("/")
     public ResponseEntity<UserType> save(@RequestBody UserType userType) {
         return new ResponseEntity<>(userTypeService.save(userType), HttpStatus.CREATED);
