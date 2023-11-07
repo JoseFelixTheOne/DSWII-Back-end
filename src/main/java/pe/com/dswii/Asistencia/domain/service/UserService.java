@@ -42,7 +42,7 @@ public class UserService {
             User u = userRepository.getUserForLogin(user).get();
             System.out.println(passwordEncoder.matches(password, encryptedPsw));
             if(passwordEncoder.matches(password, u.getPassword())){
-                return userRepository.getByUserusuarioAndClaveUsuario(user, u.getPassword());
+                return userRepository.getByUserusuarioAndClave(user, u.getPassword());
             }
             else {
                 return null;

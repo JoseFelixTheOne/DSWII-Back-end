@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UsuarioCrudRepository extends JpaRepository<Usuario, Integer> {
     @Query(value = "SELECT * FROM tb_usuario WHERE user_usuario = :user AND clave_usuario = :password AND activo_usuario = 'A'", nativeQuery = true)
-    Optional<Usuario> findByUserusuarioAndClaveUsuario(@Param("user") String user, @Param("password") String password);
+    Optional<Usuario> findByUserusuarioAndClave(@Param("user") String user, @Param("password") String password);
 
     @Query(value = "SELECT * FROM tb_usuario WHERE user_usuario = :username AND activo_usuario = 'A'", nativeQuery = true)
     Optional<Usuario> getUserForLogin(@Param("username") String user);

@@ -43,8 +43,8 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> getByUserusuarioAndClaveUsuario(String user, String password) {
-        return usuarioCrudRepository.findByUserusuarioAndClaveUsuario(user, password).map(usuario-> mapper.toUser(usuario));
+    public Optional<User> getByUserusuarioAndClave(String user, String password) {
+        return usuarioCrudRepository.findByUserusuarioAndClave(user, password).map(usuario-> mapper.toUser(usuario));
     }
 
     @Override
