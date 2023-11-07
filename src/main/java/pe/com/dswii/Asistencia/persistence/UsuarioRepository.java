@@ -6,7 +6,6 @@ import pe.com.dswii.Asistencia.domain.repository.UserRepository;
 import pe.com.dswii.Asistencia.persistence.crud.UsuarioCrudRepository;
 import pe.com.dswii.Asistencia.persistence.entity.Usuario;
 import pe.com.dswii.Asistencia.persistence.mapper.UserMapper;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -44,15 +43,19 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> getByUsuarioaccesoAndClave(String user, String password) {
-        return usuarioCrudRepository.getByUsuarioaccesoAndClave(user, password)
-                .map(u -> mapper.toUser(u));
+    public Optional<User> getByUserusuarioAndClaveUsuario(String user, String password) {
+        return usuarioCrudRepository.findByUserusuarioAndClaveUsuario(user, password).map(usuario-> mapper.toUser(usuario));
     }
 
     @Override
-    public Optional<User> getByUsuarioacceso(String user) {
-        return usuarioCrudRepository.getByUsuarioacceso(user)
-                .map(u -> mapper.toUser(u));
+    public Optional<User> getUserForLogin(String user) {
+        return usuarioCrudRepository.getUserForLogin(user).map(usuario -> mapper.toUser(usuario));
+    }
+
+    @Override
+    public List<User> getByNombreusuario(String user){
+        List<Usuario> usuarios = usuarioCrudRepository.findByNombreusuario(user).get();
+        return mapper.toUsers(usuarios);
     }
 
     @Override

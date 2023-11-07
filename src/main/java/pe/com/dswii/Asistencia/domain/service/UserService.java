@@ -1,5 +1,6 @@
 package pe.com.dswii.Asistencia.domain.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,19 +36,33 @@ public class UserService {
         return userRepository.getUser(iduser);
     }
 
-    public Optional<User> getByUsuarioaccesoAndClave(String user, String password){
-        User u = userRepository.getByUsuarioacceso(user).get();
-        if(passwordEncoder.matches(password, u.getPassword())){
-            return userRepository.getByUsuarioaccesoAndClave(user, u.getPassword());
+    public Optional<User> getByUserusuarioAndClaveUsuario(String user, String password){
+        String encryptedPsw = passwordEncoder.encode(password);
+        try{
+            User u = userRepository.getUserForLogin(user).get();
+            System.out.println(passwordEncoder.matches(password, encryptedPsw));
+            if(passwordEncoder.matches(password, u.getPassword())){
+                return userRepository.getByUserusuarioAndClaveUsuario(user, u.getPassword());
+            }
+            else {
+                return null;
+            }
         }
-        else {
+        catch (NullPointerException e){
+            System.out.println(e.getCause() + "\n" + e.getMessage());
             return null;
         }
     }
+    public List<User> getByNombreusuario(String username){
+        return userRepository.getByNombreusuario(username);
+    }
+
     public User save(User user) {
         int personId = user.getPersonId();
         Person person = personRepository.getPerson(personId).get();
         person.setPersonHasUser(true);
+
+        System.out.println(person.getPersonActive());
         personRepository.save(person);
 
         String encryptedPsw = passwordEncoder.encode(user.getPassword());

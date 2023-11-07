@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.*;
 import pe.com.dswii.Asistencia.domain.User;
 import pe.com.dswii.Asistencia.domain.service.UserService;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/user")
 public class UserController {
-
     //Inyección de dependencias
     private final UserService userService;
     public UserController(UserService userService){
@@ -32,7 +32,6 @@ public class UserController {
     public ResponseEntity<List<User>> getAll() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
-
     //Usuario filtrado por ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") int iduser) {
@@ -40,12 +39,16 @@ public class UserController {
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    //Búsqueda de usuario existente
-    @GetMapping("/{user}/{password}")
-    public ResponseEntity<User> getByUsuarioaccesoAndClave(@PathVariable("user") String user,@PathVariable("password") String password){
-        return userService.getByUsuarioaccesoAndClave(user, password)
-                .map(u -> new ResponseEntity<>(u, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    //Búsqueda de usuario (LOGIN)
+    @GetMapping("/login/{user}/{password}")
+    public ResponseEntity<Optional<User>> getByUserusuarioAndClaveUsuario(@PathVariable("user") String username, @PathVariable("password") String password){
+        return new ResponseEntity<>(userService.getByUserusuarioAndClaveUsuario(username, password), HttpStatus.OK);
+    }
+    //Búsqueda de usuario por username
+    @GetMapping("/username/{username}")
+    public ResponseEntity<List<User>> getByUsuarioacceso(@PathVariable("username") String username){
+        return new ResponseEntity<>(userService.getByNombreusuario(username), HttpStatus.OK);
+
     }
     //Registro de Usuario
     @PostMapping("/")

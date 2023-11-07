@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserMapper {
     @Mapping(source = "idusuario", target = "userId")
     @Mapping(source = "idpersona", target = "personId")
-    @Mapping(source = "usuarioacceso", target = "user")
+    @Mapping(source = "userUsuario", target = "username")
     @Mapping(source = "clave", target = "password")
     @Mapping(source = "tipousuario", target = "usertype")
     @Mapping(source = "activo", target = "active")

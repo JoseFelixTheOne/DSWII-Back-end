@@ -16,7 +16,7 @@ public class Usuario {
     @Column(name = "id_persona")
     private int idpersona;
     @Column(name = "user_usuario")
-    private String usuarioacceso;
+    private String userUsuario;
     @Column(name = "clave_usuario")
     private String clave;
     @Column(name = "id_tipousuario")
