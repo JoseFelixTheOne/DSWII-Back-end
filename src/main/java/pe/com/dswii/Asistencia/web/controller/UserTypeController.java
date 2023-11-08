@@ -61,6 +61,6 @@ public class UserTypeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity <List<UserType>> delete(@PathVariable("id") int userTypeId){
         userTypeService.delete(userTypeId);
-        return new ResponseEntity<>(userTypeService.getAllActive(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(userTypeService.getAllActive(), HttpStatus.OK);
     }
 }

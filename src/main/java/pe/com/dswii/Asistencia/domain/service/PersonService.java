@@ -44,13 +44,8 @@ public class PersonService {
         return personRepository.getByTypeId(idTipo);
     }
     public Person save(Person person){
-        int personId = person.getPersonId();
-        Person persona = getPerson(personId).map(p -> {
-            BeanUtils.copyProperties(person, p);
-            return p;
-        }).orElseThrow(() -> new EntityNotFoundException("Person not found with ID : " + personId));
-
-        return personRepository.save(persona);
+        person.setPersonActive("A");
+        return personRepository.save(person);
     }
     public Person update(Person person){
         int personId =  person.getPersonId();
