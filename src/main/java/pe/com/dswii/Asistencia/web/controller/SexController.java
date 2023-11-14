@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.dswii.Asistencia.domain.Sex;
 import pe.com.dswii.Asistencia.domain.service.SexService;
-
 import java.util.List;
 
 @RestController
@@ -21,6 +20,7 @@ public class SexController {
     @GetMapping({"", "/"})
     public ResponseEntity<List<Sex>> getAllActive(){
         return new ResponseEntity<>(sexService.getAllActive(), HttpStatus.OK);
+
     }
     //Listado de inactivos
     @GetMapping("/inactive")
