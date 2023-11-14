@@ -83,10 +83,14 @@ public class UserService {
     }
 
     public void delete(int userId) {
+
         if (getUser(userId).isPresent()) {
             User user = userRepository.getUser(userId).get();
             user.setActive("I");
             userRepository.save(user);
+            //Quitar el usuario de la persona asociada
+            int personId = getUser(userId).get().getPersonId();
+            personRepository.getPerson(personId).get().setPersonHasUser(false);
         }
         else {
             System.out.println("ERROR 404 : USER NOT FOUND");
