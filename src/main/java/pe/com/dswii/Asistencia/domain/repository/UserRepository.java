@@ -16,5 +16,4 @@ public interface UserRepository {
     void delete(int iduser);
     boolean existsByUserUsuario(String username);
     boolean existsByIdpersona(int idpasajero);
-    DtoAuthResponse login(String user, String password);
 }

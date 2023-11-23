@@ -2,7 +2,12 @@ package pe.com.dswii.Asistencia.domain.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pe.com.dswii.Asistencia.domain.Person;
@@ -100,6 +105,15 @@ public class UserService {
         return usuarioRepository.existsByIdpersona(idpasajero);
     }
     public DtoAuthResponse login(String user, String password){
-        return usuarioRepository.login(user, password);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generarToken(authentication);
+        String username = jwtGenerator.obtenerUsernameDeJwt(token);
+        User u = usuarioRepository.getByUsername(username);
+        int userId = u.getUserId();
+        String name = u.getObjPerson().getPersonName();
+        String lastname1 = u.getObjPerson().getPersonLastname1();
+        String lastname2 = u.getObjPerson().getPersonLastname2();
+        return new DtoAuthResponse(token, username , userId, name, lastname1, lastname2);
     }
 }

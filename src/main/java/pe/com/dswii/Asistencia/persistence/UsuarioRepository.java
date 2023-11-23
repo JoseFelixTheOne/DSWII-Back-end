@@ -91,21 +91,4 @@ public class UsuarioRepository implements UserRepository {
         return usuarioCrudRepository.existsByIdpersona(usertypeId);
     }
 
-    @Override
-    public DtoAuthResponse login(String user, String password) {
-
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generarToken(authentication);
-        String username = jwtGenerator.obtenerUsernameDeJwt(token);
-
-        List<User> u = getListaByNombreusuario(username);
-
-        int userId = u.get(0).getUserId();
-        String name = u.get(0).getObjPerson().getPersonName();
-        String lastname1 = u.get(0).getObjPerson().getPersonLastname1();
-        String lastname2 = u.get(0).getObjPerson().getPersonLastname2();
-
-        return new DtoAuthResponse(token, username , userId, name, lastname1, lastname2);
-    }
 }

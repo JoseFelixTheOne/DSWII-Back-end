@@ -1,15 +1,24 @@
 package pe.com.dswii.Asistencia.web.controller;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pe.com.dswii.Asistencia.domain.User;
 import pe.com.dswii.Asistencia.domain.service.PersonService;
 import pe.com.dswii.Asistencia.domain.service.UserService;
+import pe.com.dswii.Asistencia.domain.service.UserTypeService;
 import pe.com.dswii.Asistencia.web.dtosecurity.DtoAuthResponse;
 import pe.com.dswii.Asistencia.web.dtosecurity.DtoLogin;
 import pe.com.dswii.Asistencia.web.dtosecurity.DtoRegistro;
+import pe.com.dswii.Asistencia.web.security.JwtGenerator;
+
 import java.util.List;
 
 @RestController
@@ -19,9 +28,19 @@ public class UserController {
     //Inyección de dependencias
     private final UserService userService;
     private final PersonService personService;
-    public UserController(UserService userService, PersonService personService) {
+    private final UserTypeService userTypeService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtGenerator jwtGenerator;
+    public UserController(UserService userService, PersonService personService,
+                          UserTypeService userTypeService, AuthenticationManager authenticationManager,
+                          PasswordEncoder passwordEncoder, JwtGenerator jwtGenerator) {
         this.userService = userService;
         this.personService = personService;
+        this.userTypeService = userTypeService;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
     }
     //Listado de activos
     @GetMapping({"", "/"})
