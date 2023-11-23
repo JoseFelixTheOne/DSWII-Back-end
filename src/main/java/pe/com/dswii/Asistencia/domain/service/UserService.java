@@ -37,12 +37,7 @@ public class UserService {
         return usuarioRepository.save(user);
     }
     public User update(User user) {
-        int iduser = user.getUserId();
-        User usuario = getUser(iduser).map(u ->{
-            BeanUtils.copyProperties(user, u);
-            return u;
-        }).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + iduser));
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.save(user);
     }
     public void delete(int userId) {
         if (getUser(userId).isPresent()) {

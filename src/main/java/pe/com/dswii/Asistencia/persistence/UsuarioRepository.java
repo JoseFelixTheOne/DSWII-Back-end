@@ -1,5 +1,7 @@
 package pe.com.dswii.Asistencia.persistence;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -66,20 +68,32 @@ public class UsuarioRepository implements UserRepository {
         return mapper.toUsers(usuarios);
     }
     @Override
-    public User save(User dtoRegistro) {
-        User user = new User();
-        user.setPersonId(dtoRegistro.getPersonId());
-        user.setUsername(dtoRegistro.getUsername());
-        user.setPassword(passwordEncoder.encode(dtoRegistro.getPassword()));
-        Optional<UserType> tipoUsuario = userTypeService.getUserType(dtoRegistro.getUsertype());
-        user.setUsertype(tipoUsuario.get().getUserTypeId());
-        user.setActive("A");
+    public User save(User user) {
+        Usuario usuario;
+        if (!getUser(user.getUserId()).isPresent()){
+            User newUser = new User();
+            newUser.setPersonId(user.getPersonId());
+            newUser.setUsername(user.getUsername());
+            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            Optional<UserType> tipoUsuario = userTypeService.getUserType(user.getUsertype());
+            newUser.setUsertype(tipoUsuario.get().getUserTypeId());
+            newUser.setActive("A");
 
-        Person person = personService.getPerson(user.getPersonId()).get();
-        person.setPersonHasUser("1");
-        personService.update(person);
+            Person person = personService.getPerson(newUser.getPersonId()).get();
+            person.setPersonHasUser("1");
+            personService.update(person);
+            usuario = mapper.toUsuario(newUser);
+        }
+        else {
+            int iduser = user.getUserId();
+            User u = getUser(iduser).map(b ->{
+                BeanUtils.copyProperties(user, b);
+                return b;
+            }).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + iduser));
+            u.setActive("A");
+            usuario = mapper.toUsuario(u);
+        }
 
-        Usuario usuario = mapper.toUsuario(user);
         return mapper.toUser(usuarioCrudRepository.save(usuario));
     }
     @Override

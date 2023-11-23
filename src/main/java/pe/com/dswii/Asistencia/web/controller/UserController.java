@@ -57,13 +57,13 @@ public class UserController {
         boolean personexists = personService.existsById(dtoRegistro.getPersonId());
         boolean personhasuser = userService.existsByIdpersona(dtoRegistro.getPersonId());
         if(userexists){
-            return new ResponseEntity<>("El nombre de usuario ya existe", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
         }
         else if (!personexists){
-            return new ResponseEntity<>("El pasajero no existe", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("La persona no está registrada", HttpStatus.BAD_REQUEST);
         }
         else if (personhasuser){
-            return new ResponseEntity<>("El pasajero ya tiene un usuario", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("La persona ya tiene un usuario creado", HttpStatus.BAD_REQUEST);
         }else{
             User user = new User();
             BeanUtils.copyProperties(dtoRegistro, user);
@@ -78,11 +78,19 @@ public class UserController {
     //Actualización de Usuario
     @PutMapping("/")
     public ResponseEntity<?> update(@RequestBody User user) {
+
+        List<User> usuarioExistente = userService.getByNombreusuario(user.getUsername());
         boolean userexists = userService.existsByUserUsuario(user.getUsername());
         if(userexists){
-            return new ResponseEntity<>("El nombre de usuario ya existe", HttpStatus.BAD_REQUEST);
+            if (usuarioExistente.get(0).getUserId() == user.getUserId()){
+                return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+            }
+            else if (!userService.getUser(user.getUserId()).isPresent()){
+                return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
         }
-        else{
+        else {
             return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
         }
     }
