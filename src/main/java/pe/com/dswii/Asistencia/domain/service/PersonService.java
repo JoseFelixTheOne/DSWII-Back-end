@@ -65,4 +65,7 @@ public class PersonService {
             System.out.println("ERROR 404 : PERSON NOT FOUND");
         }
     }
+    public boolean existsById(int idpas){
+        return personRepository.existsById(idpas);
+    }
 }

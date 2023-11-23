@@ -82,4 +82,9 @@ public class PersonaRepository  implements PersonRepository {
     public void delete(int personId) {
         System.out.println("SE ELIMINÓ CORRECTAMENTE A LA PERSONA CON ID: " + personId);
     }
+
+    @Override
+    public boolean existsById(int personId) {
+        return personaCrudRepository.existsById(personId);
+    }
 }

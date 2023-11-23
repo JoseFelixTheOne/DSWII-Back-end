@@ -19,7 +19,7 @@ public class Person {
     private String personBirthdate;
     private String personPhone;
     private String personActive;
-    private boolean personHasUser;
+    private String personHasUser;
 
     private Sex objSex;
     private Type objType;

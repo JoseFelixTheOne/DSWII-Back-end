@@ -6,11 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
-    private Integer userId;
-    private Integer personId;
+    private int userId;
+    private int personId;
     private String username;
     private String password;
-    private Integer usertype;
+    private int usertype;
     private String active;
 
     private UserType objuserType;

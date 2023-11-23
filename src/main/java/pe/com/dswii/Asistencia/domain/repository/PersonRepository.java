@@ -16,4 +16,6 @@ public interface PersonRepository {
     Optional<List<Person>> getByTypeId(int typeId);
     Person save (Person person);
     void delete(int personId);
+
+    boolean existsById(int personId);
 }

@@ -34,7 +34,7 @@ public class Persona {
     @Column(name = "activo_persona")
     private String activoPersona;
     @Column(name = "btieneusuario_persona")
-    private boolean btieneusuarioPersona;
+    private String btieneusuarioPersona;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo", insertable = false, updatable = false)
