@@ -1,15 +1,12 @@
 package pe.com.dswii.Asistencia.web.controller;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pe.com.dswii.Asistencia.domain.Person;
 import pe.com.dswii.Asistencia.domain.User;
 import pe.com.dswii.Asistencia.domain.service.PersonService;
 import pe.com.dswii.Asistencia.domain.service.UserService;
@@ -18,7 +15,6 @@ import pe.com.dswii.Asistencia.web.dtosecurity.DtoAuthResponse;
 import pe.com.dswii.Asistencia.web.dtosecurity.DtoLogin;
 import pe.com.dswii.Asistencia.web.dtosecurity.DtoRegistro;
 import pe.com.dswii.Asistencia.web.security.JwtGenerator;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -73,21 +69,22 @@ public class UserController {
     //Registro de Usuario
     @PostMapping("/")
     public ResponseEntity<?> save(@RequestBody DtoRegistro dtoRegistro){
+        Person person = personService.getPerson(dtoRegistro.getPersonId()).get();
         User user = new User();
         boolean userexists = userService.existsByUserUsuario(dtoRegistro.getUsername());
         boolean personexists = personService.existsById(dtoRegistro.getPersonId());
         boolean personhasuser = userService.existsByIdpersona(dtoRegistro.getPersonId());
-        if(userexists){
-            return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
-        }
-        else if (!personexists){
+        if (!personexists){
             return new ResponseEntity<>("La persona no está registrada", HttpStatus.BAD_REQUEST);
         }
+        else if(userexists){
+            return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
+        }
         else if (personhasuser){
-            if(userService.getByUsername(dtoRegistro.getUsername()).get().getActive().equals("A")){
+            if(person.getPersonActive().equals("A")){
                 return new ResponseEntity<>("La persona ya tiene un usuario creado", HttpStatus.BAD_REQUEST);
             }
-            else {
+            else{
                 BeanUtils.copyProperties(dtoRegistro, user);
                 return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
             }

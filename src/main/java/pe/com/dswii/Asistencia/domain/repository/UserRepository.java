@@ -1,7 +1,6 @@
 package pe.com.dswii.Asistencia.domain.repository;
 
 import pe.com.dswii.Asistencia.domain.User;
-import pe.com.dswii.Asistencia.web.dtosecurity.DtoAuthResponse;
 import java.util.List;
 import java.util.Optional;
 
