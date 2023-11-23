@@ -77,8 +77,14 @@ public class UserController {
     }
     //Actualización de Usuario
     @PutMapping("/")
-    public ResponseEntity<User> update(@RequestBody User user) {
-        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+    public ResponseEntity<?> update(@RequestBody User user) {
+        boolean userexists = userService.existsByUserUsuario(user.getUsername());
+        if(userexists){
+            return new ResponseEntity<>("El nombre de usuario ya existe", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+        }
     }
     // Eliminación de Usuario
     @DeleteMapping("/{id}")
