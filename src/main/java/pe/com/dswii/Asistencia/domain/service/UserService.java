@@ -2,21 +2,40 @@ package pe.com.dswii.Asistencia.domain.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pe.com.dswii.Asistencia.domain.Person;
 import pe.com.dswii.Asistencia.domain.User;
+import pe.com.dswii.Asistencia.domain.UserType;
 import pe.com.dswii.Asistencia.persistence.UsuarioRepository;
+import pe.com.dswii.Asistencia.persistence.entity.Usuario;
+import pe.com.dswii.Asistencia.persistence.mapper.UserMapper;
 import pe.com.dswii.Asistencia.web.dtosecurity.DtoAuthResponse;
+import pe.com.dswii.Asistencia.web.security.JwtGenerator;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UsuarioRepository usuarioRepository;
+    private final UserTypeService userTypeService;
     private final PersonService personService;
-    public UserService(UsuarioRepository usuarioRepository, PersonService personService){
+    private final UserMapper mapper;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtGenerator jwtGenerator;
+    public UserService(UsuarioRepository usuarioRepository, PersonService personService, UserMapper mapper,
+                       AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder,
+                       JwtGenerator jwtGenerator, UserTypeService userTypeService){
         this.usuarioRepository = usuarioRepository;
+        this.userTypeService = userTypeService;
         this.personService = personService;
+        this.mapper = mapper;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
     }
     public List<User> getAll(){
         return usuarioRepository.getAll();
@@ -30,21 +49,40 @@ public class UserService {
     public Optional<User> getUser(int userId) {
         return usuarioRepository.getUser(userId);
     }
-    public List<User> getByNombreusuario(String username){
-        return usuarioRepository.getByNombreusuario(username);
+    public List<User> getListaByNombreusuario(String username){
+        return usuarioRepository.getListaByNombreusuario(username);
+    }
+    public User getByUsername(String username){
+        return usuarioRepository.getByUsername(username);
     }
     public User save(User user) {
-        return usuarioRepository.save(user);
+        User newUser = new User();
+        newUser.setPersonId(user.getPersonId());
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        Optional<UserType> tipoUsuario = userTypeService.getUserType(user.getUsertype());
+        newUser.setUsertype(tipoUsuario.get().getUserTypeId());
+        newUser.setActive("A");
+
+        Person person = personService.getPerson(newUser.getPersonId()).get();
+        person.setPersonHasUser("1");
+        personService.update(person);
+        return usuarioRepository.save(newUser);
     }
     public User update(User user) {
-        return usuarioRepository.save(user);
+        int iduser = user.getUserId();
+        User u = getUser(iduser).map(b ->{
+            BeanUtils.copyProperties(user, b);
+            return b;
+        }).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + iduser));
+        u.setActive("A");
+        return usuarioRepository.save(u);
     }
     public void delete(int userId) {
         if (getUser(userId).isPresent()) {
             User user = getUser(userId).get();
             user.setActive("I");
             usuarioRepository.save(user);
-
             if (personService.getPerson(user.getPersonId()).isPresent()){
                 Person person = personService.getPerson(user.getPersonId()).get();
                 person.setPersonHasUser("0");

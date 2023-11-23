@@ -48,7 +48,7 @@ public class UserController {
     //Búsqueda de usuario por username
     @GetMapping("/username/{username}")
     public ResponseEntity<List<User>> getByUsuarioacceso(@PathVariable("username") String username){
-        return new ResponseEntity<>(userService.getByNombreusuario(username), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getListaByNombreusuario(username), HttpStatus.OK);
     }
     //Registro de Usuario
     @PostMapping("/")
@@ -78,17 +78,17 @@ public class UserController {
     //Actualización de Usuario
     @PutMapping("/")
     public ResponseEntity<?> update(@RequestBody User user) {
-
-        List<User> usuarioExistente = userService.getByNombreusuario(user.getUsername());
+        User usuarioExistente = userService.getByUsername(user.getUsername());
         boolean userexists = userService.existsByUserUsuario(user.getUsername());
         if(userexists){
-            if (usuarioExistente.get(0).getUserId() == user.getUserId()){
+            if (usuarioExistente.getUserId() == user.getUserId()){
                 return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
             }
             else if (!userService.getUser(user.getUserId()).isPresent()){
                 return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
+            }else {
+                return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
         }
         else {
             return new ResponseEntity<>(userService.update(user), HttpStatus.OK);

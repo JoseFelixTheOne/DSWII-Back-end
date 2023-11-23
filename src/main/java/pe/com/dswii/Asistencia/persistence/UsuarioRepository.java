@@ -63,37 +63,19 @@ public class UsuarioRepository implements UserRepository {
         return usuarioCrudRepository.findById(iduser).map(usuario -> mapper.toUser(usuario));
     }
     @Override
-    public List<User> getByNombreusuario(String user){
+    public List<User> getListaByNombreusuario(String user){
         List<Usuario> usuarios = usuarioCrudRepository.findByUserUsuarioContaining(user).get();
         return mapper.toUsers(usuarios);
     }
+
+    @Override
+    public User getByUsername(String username) {
+        return usuarioCrudRepository.findByUserUsuario(username).map(usuario -> mapper.toUser(usuario)).get();
+    }
+
     @Override
     public User save(User user) {
-        Usuario usuario;
-        if (!getUser(user.getUserId()).isPresent()){
-            User newUser = new User();
-            newUser.setPersonId(user.getPersonId());
-            newUser.setUsername(user.getUsername());
-            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-            Optional<UserType> tipoUsuario = userTypeService.getUserType(user.getUsertype());
-            newUser.setUsertype(tipoUsuario.get().getUserTypeId());
-            newUser.setActive("A");
-
-            Person person = personService.getPerson(newUser.getPersonId()).get();
-            person.setPersonHasUser("1");
-            personService.update(person);
-            usuario = mapper.toUsuario(newUser);
-        }
-        else {
-            int iduser = user.getUserId();
-            User u = getUser(iduser).map(b ->{
-                BeanUtils.copyProperties(user, b);
-                return b;
-            }).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + iduser));
-            u.setActive("A");
-            usuario = mapper.toUsuario(u);
-        }
-
+        Usuario usuario = mapper.toUsuario(user);
         return mapper.toUser(usuarioCrudRepository.save(usuario));
     }
     @Override
@@ -117,7 +99,7 @@ public class UsuarioRepository implements UserRepository {
         String token = jwtGenerator.generarToken(authentication);
         String username = jwtGenerator.obtenerUsernameDeJwt(token);
 
-        List<User> u = getByNombreusuario(username);
+        List<User> u = getListaByNombreusuario(username);
 
         int userId = u.get(0).getUserId();
         String name = u.get(0).getObjPerson().getPersonName();

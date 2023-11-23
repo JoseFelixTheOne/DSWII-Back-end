@@ -11,6 +11,7 @@ public interface UsuarioCrudRepository extends JpaRepository<Usuario, Integer> {
     @Query(value = "SELECT * FROM tb_usuario as u WHERE user_usuario = :username AND activo_usuario = 'A'", nativeQuery = true)
     Optional<Usuario> getUserForLogin(@Param("username") String user);
     Optional<List<Usuario>> findByUserUsuarioContaining(String username);
+    Optional<Usuario> findByUserUsuario(String username);
     @Query(value = "SELECT * FROM tb_usuario WHERE activo_usuario = 'A'", nativeQuery = true)
     Optional<List<Usuario>> findAllActive();
     @Query(value = "SELECT * FROM tb_usuario WHERE activo_usuario = 'I'", nativeQuery = true)
