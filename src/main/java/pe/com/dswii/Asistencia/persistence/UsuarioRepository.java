@@ -69,8 +69,8 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
-    public User getByUsername(String username) {
-        return usuarioCrudRepository.findByUserUsuario(username).map(usuario -> mapper.toUser(usuario)).get();
+    public Optional<User> getByUsername(String username) {
+        return usuarioCrudRepository.findByUserUsuario(username).map(usuario -> mapper.toUser(usuario));
     }
 
     @Override

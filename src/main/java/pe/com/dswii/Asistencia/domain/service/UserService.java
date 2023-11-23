@@ -63,7 +63,7 @@ public class UserService {
     public List<User> getListaByNombreusuario(String username){
         return usuarioRepository.getListaByNombreusuario(username);
     }
-    public User getByUsername(String username){
+    public Optional<User> getByUsername(String username){
         return usuarioRepository.getByUsername(username);
     }
     @Transactional
@@ -85,9 +85,10 @@ public class UserService {
         int iduser = user.getUserId();
         User u = getUser(iduser).map(b ->{
             BeanUtils.copyProperties(user, b);
+            b.setPassword(passwordEncoder.encode(user.getPassword()));
+            b.setActive("A");
             return b;
         }).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + iduser));
-        u.setActive("A");
         return usuarioRepository.save(u);
     }
     @Transactional
@@ -119,7 +120,7 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generarToken(authentication);
         String username = jwtGenerator.obtenerUsernameDeJwt(token);
-        User u = usuarioRepository.getByUsername(username);
+        User u = usuarioRepository.getByUsername(username).get();
         String name = u.getObjPerson().getPersonName();
         String lastname1 = u.getObjPerson().getPersonLastname1();
         String lastname2 = u.getObjPerson().getPersonLastname2();

@@ -20,6 +20,7 @@ import pe.com.dswii.Asistencia.web.dtosecurity.DtoRegistro;
 import pe.com.dswii.Asistencia.web.security.JwtGenerator;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -72,6 +73,7 @@ public class UserController {
     //Registro de Usuario
     @PostMapping("/")
     public ResponseEntity<?> save(@RequestBody DtoRegistro dtoRegistro){
+        User user = new User();
         boolean userexists = userService.existsByUserUsuario(dtoRegistro.getUsername());
         boolean personexists = personService.existsById(dtoRegistro.getPersonId());
         boolean personhasuser = userService.existsByIdpersona(dtoRegistro.getPersonId());
@@ -82,9 +84,15 @@ public class UserController {
             return new ResponseEntity<>("La persona no está registrada", HttpStatus.BAD_REQUEST);
         }
         else if (personhasuser){
-            return new ResponseEntity<>("La persona ya tiene un usuario creado", HttpStatus.BAD_REQUEST);
-        }else{
-            User user = new User();
+            if(userService.getByUsername(dtoRegistro.getUsername()).get().getActive().equals("A")){
+                return new ResponseEntity<>("La persona ya tiene un usuario creado", HttpStatus.BAD_REQUEST);
+            }
+            else {
+                BeanUtils.copyProperties(dtoRegistro, user);
+                return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+            }
+        }
+        else{
             BeanUtils.copyProperties(dtoRegistro, user);
             return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
         }
@@ -97,15 +105,16 @@ public class UserController {
     //Actualización de Usuario
     @PutMapping("/")
     public ResponseEntity<?> update(@RequestBody User user) {
-        User usuarioExistente = userService.getByUsername(user.getUsername());
+        Optional<User> usuarioExistente = userService.getByUsername(user.getUsername());
         boolean userexists = userService.existsByUserUsuario(user.getUsername());
         if(userexists){
-            if (usuarioExistente.getUserId() == user.getUserId()){
+            if (usuarioExistente.get().getUserId() == user.getUserId()){
                 return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
             }
             else if (!userService.getUser(user.getUserId()).isPresent()){
                 return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
-            }else {
+            }
+            else {
                 return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
             }
         }
