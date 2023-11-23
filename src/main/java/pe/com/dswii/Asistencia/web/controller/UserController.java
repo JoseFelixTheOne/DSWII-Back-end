@@ -111,12 +111,12 @@ public class UserController {
             if (usuarioExistente.get().getUserId() == user.getUserId()){
                 return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
             }
-            else if (!userService.getUser(user.getUserId()).isPresent()){
-                return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
-            }
             else {
                 return new ResponseEntity<>("El nombre de usuario se encuentra en uso", HttpStatus.BAD_REQUEST);
             }
+        }
+        else if (!userService.getUser(user.getUserId()).isPresent()){
+                return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
         }
         else {
             return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
