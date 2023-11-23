@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 public class MenuDService {
-    //Autowired eliminado
     private final MenuDRepository menuDRepository;
     public MenuDService(MenuDRepository menuDRepository){
         this.menuDRepository = menuDRepository;

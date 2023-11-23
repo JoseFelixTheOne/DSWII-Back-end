@@ -1,6 +1,5 @@
 package pe.com.dswii.Asistencia.persistence;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pe.com.dswii.Asistencia.domain.MenuD;
 import pe.com.dswii.Asistencia.domain.repository.MenuDRepository;
@@ -19,8 +18,6 @@ public class MenuRepository implements MenuDRepository {
         this.menuCrudRepository = menuCrudRepository;
         this.mapper = mapper;
     }
-
-
     @Override
     public List<MenuD> getAll() {
         List<Menu> menu = menuCrudRepository.findAll();
