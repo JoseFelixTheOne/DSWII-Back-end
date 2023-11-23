@@ -16,8 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration //Le indica al contenedor de Spring que esta es una clas de Seguridad al arrancar la app
 @EnableWebSecurity //Va a indicar que se activará la seguridad web en la aplicación
 public class SecurityConfig{
-    private JwtAuthenticationEntryProint jwtAuthenticationEntryProint;
-    @Autowired
+    private final JwtAuthenticationEntryProint jwtAuthenticationEntryProint;
     public SecurityConfig(JwtAuthenticationEntryProint jwtAuthenticationEntryProint){
         this.jwtAuthenticationEntryProint = jwtAuthenticationEntryProint;
     }
@@ -46,7 +45,7 @@ public class SecurityConfig{
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll(); //Permitimos todas las peticiones
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
         }

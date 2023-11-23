@@ -1,22 +1,45 @@
 package pe.com.dswii.Asistencia.persistence;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import pe.com.dswii.Asistencia.domain.Person;
 import pe.com.dswii.Asistencia.domain.User;
+import pe.com.dswii.Asistencia.domain.UserType;
 import pe.com.dswii.Asistencia.domain.repository.UserRepository;
+import pe.com.dswii.Asistencia.domain.service.PersonService;
+import pe.com.dswii.Asistencia.domain.service.UserTypeService;
 import pe.com.dswii.Asistencia.persistence.crud.UsuarioCrudRepository;
 import pe.com.dswii.Asistencia.persistence.entity.Usuario;
 import pe.com.dswii.Asistencia.persistence.mapper.UserMapper;
+import pe.com.dswii.Asistencia.web.dtosecurity.DtoAuthResponse;
+import pe.com.dswii.Asistencia.web.security.JwtGenerator;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class UsuarioRepository implements UserRepository {
-    private UsuarioCrudRepository usuarioCrudRepository;
-    private UserMapper mapper;
-    public UsuarioRepository(UsuarioCrudRepository usuarioCrudRepository, UserMapper mapper) {
+    private final UsuarioCrudRepository usuarioCrudRepository;
+    private final UserTypeService userTypeService;
+    private final UserMapper mapper;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtGenerator jwtGenerator;
+    private final PersonService personService;
+    public UsuarioRepository(UsuarioCrudRepository usuarioCrudRepository, UserTypeService userTypeService,
+                             UserMapper mapper, AuthenticationManager authenticationManager,
+                             PasswordEncoder passwordEncoder, JwtGenerator jwtGenerator,
+                             PersonService personService) {
         this.usuarioCrudRepository = usuarioCrudRepository;
+        this.userTypeService = userTypeService;
         this.mapper = mapper;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
+        this.personService = personService;
     }
     @Override
     public List<User> getAll() {
@@ -39,11 +62,23 @@ public class UsuarioRepository implements UserRepository {
     }
     @Override
     public List<User> getByNombreusuario(String user){
-        List<Usuario> usuarios = usuarioCrudRepository.findByNombreusuario(user).get();
+        List<Usuario> usuarios = usuarioCrudRepository.findByUserUsuarioContaining(user).get();
         return mapper.toUsers(usuarios);
     }
     @Override
-    public User save(User user) {
+    public User save(User dtoRegistro) {
+        User user = new User();
+        user.setPersonId(dtoRegistro.getPersonId());
+        user.setUsername(dtoRegistro.getUsername());
+        user.setPassword(passwordEncoder.encode(dtoRegistro.getPassword()));
+        Optional<UserType> tipoUsuario = userTypeService.getUserType(dtoRegistro.getUsertype());
+        user.setUsertype(tipoUsuario.get().getUserTypeId());
+        user.setActive("A");
+
+        Person person = personService.getPerson(user.getPersonId()).get();
+        person.setPersonHasUser("1");
+        personService.update(person);
+
         Usuario usuario = mapper.toUsuario(user);
         return mapper.toUser(usuarioCrudRepository.save(usuario));
     }
@@ -58,5 +93,23 @@ public class UsuarioRepository implements UserRepository {
     @Override
     public boolean existsByIdpersona(int usertypeId) {
         return usuarioCrudRepository.existsByIdpersona(usertypeId);
+    }
+
+    @Override
+    public DtoAuthResponse login(String user, String password) {
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generarToken(authentication);
+        String username = jwtGenerator.obtenerUsernameDeJwt(token);
+
+        List<User> u = getByNombreusuario(username);
+
+        int userId = u.get(0).getUserId();
+        String name = u.get(0).getObjPerson().getPersonName();
+        String lastname1 = u.get(0).getObjPerson().getPersonLastname1();
+        String lastname2 = u.get(0).getObjPerson().getPersonLastname2();
+
+        return new DtoAuthResponse(token, username , userId, name, lastname1, lastname2);
     }
 }

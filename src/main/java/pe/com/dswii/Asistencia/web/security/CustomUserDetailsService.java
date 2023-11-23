@@ -16,9 +16,7 @@ import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UsuarioCrudRepository usuarioCrudRepository;
-    @Autowired
+    private final UsuarioCrudRepository usuarioCrudRepository;
     public CustomUserDetailsService(UsuarioCrudRepository usuarioCrudRepository){
         this.usuarioCrudRepository = usuarioCrudRepository;
     }
