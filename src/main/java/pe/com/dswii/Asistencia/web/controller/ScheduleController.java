@@ -33,4 +33,10 @@ public class ScheduleController {
     public ResponseEntity<Schedule> getById(@PathVariable Integer id) {
         return ResponseEntity.of(scheduleService.getById(id));
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Schedule> getAll() {
+        return scheduleService.getAll();
+    }
 }
