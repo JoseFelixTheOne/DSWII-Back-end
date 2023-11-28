@@ -28,4 +28,14 @@ public class HorarioRepository implements ScheduleRepository {
     public Optional<List<Schedule>> getByProfessorId(Integer professorId) {
         return horarioCrudRepository.findAllByIdProfesor(professorId).map(mapper::toSchedules);
     }
+
+    @Override
+    public Optional<Schedule> getById(Integer id) {
+        return horarioCrudRepository.findById(id).map(mapper::toSchedule);
+    }
+
+    @Override
+    public List<Schedule> getAll() {
+        return mapper.toSchedules(horarioCrudRepository.findAll());
+    }
 }

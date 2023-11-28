@@ -35,4 +35,9 @@ public class ScheduleService {
     public Optional<List<Schedule>> getByProfessorId(Integer teacherId) {
         return scheduleRepository.getByProfessorId(teacherId);
     }
+
+    public Optional<Schedule> getById(Integer id) {
+        return scheduleRepository.getById(id);
+    }
+    public List<Schedule> getAll() {return scheduleRepository.getAll();}
 }
