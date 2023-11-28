@@ -28,4 +28,9 @@ public class ScheduleController {
     public ResponseEntity<List<Schedule>> getByProfessorId(@PathVariable Integer teacherId) {
         return ResponseEntity.of(scheduleService.getByProfessorId(teacherId));
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Schedule> getById(@PathVariable Integer id) {
+        return ResponseEntity.of(scheduleService.getById(id));
+    }
 }
