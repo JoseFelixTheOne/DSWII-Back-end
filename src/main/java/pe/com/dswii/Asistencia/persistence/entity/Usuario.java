@@ -17,7 +17,7 @@ public class Usuario {
     private int idpersona;
     @Column(name = "user_usuario")
     private String userUsuario;
-    @Column(name = "clave_usuario")
+    @Column(name = "clave_usuario", updatable = false)
     private String clave;
     @Column(name = "id_tipousuario")
     private int tipousuario;
@@ -31,6 +31,4 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "id_tipousuario", insertable = false, updatable = false)
     private TipoUsuario objTpoUsuario;
-
-
 }

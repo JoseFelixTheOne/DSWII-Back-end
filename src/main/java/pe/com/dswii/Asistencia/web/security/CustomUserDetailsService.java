@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioCrudRepository.getUserForLogin(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-        String rol = usuario.getObjTpoUsuario().getNombreTipouser(); // devuelve el nombre del rol
+        String rol = usuario.getObjTpoUsuario().getNombreTipousuario(); // devuelve el nombre del rol
         GrantedAuthority authority = mapToAuthorities(rol);
         return new User(usuario.getUserUsuario(), usuario.getClave(), Collections.singletonList(authority));
     }
