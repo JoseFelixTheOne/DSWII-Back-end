@@ -40,13 +40,8 @@ public class SecurityConfig{
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity)throws Exception{
         httpSecurity
-                .csrf().disable() //Desactivamos el csrf
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .anyRequest().permitAll(); //Permitimos todas las peticiones
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .csrf().disable()
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
         }
 }

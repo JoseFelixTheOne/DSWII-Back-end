@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserTypeMapper {
 
-    @Mapping(source = "idTipouser", target = "userTypeId")
-    @Mapping(source = "nombreTipouser", target = "name")
-    @Mapping(source = "activoTipouser", target = "active")
+    @Mapping(source = "idTipousuario", target = "userTypeId")
+    @Mapping(source = "nombreTipousuario", target = "name")
+    @Mapping(source = "activoTipousuario", target = "active")
     UserType toUserType(TipoUsuario tipoUsuario);
     List<UserType> toUserTypes(List<TipoUsuario> tipoUsuarios);
 

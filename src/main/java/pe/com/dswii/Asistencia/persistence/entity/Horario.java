@@ -3,7 +3,6 @@ package pe.com.dswii.Asistencia.persistence.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.awt.*;
 
 @Entity
 @Table(name = "tb_horario")
@@ -25,7 +24,7 @@ public class Horario {
 
     @ManyToOne
     @JoinColumn(name = "id_curso", insertable = false, updatable = false)
-    private Cursor objCurso;
+    private Curso objCurso;
 
     @ManyToOne
     @JoinColumn(name = "id_seccion", insertable = false, updatable = false)

@@ -1,6 +1,7 @@
 package pe.com.dswii.Asistencia.domain.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,10 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pe.com.dswii.Asistencia.domain.LoginDetail;
-import pe.com.dswii.Asistencia.domain.Person;
-import pe.com.dswii.Asistencia.domain.User;
-import pe.com.dswii.Asistencia.domain.UserType;
+import pe.com.dswii.Asistencia.domain.*;
 import pe.com.dswii.Asistencia.persistence.LoginDetalleRepository;
 import pe.com.dswii.Asistencia.persistence.UsuarioRepository;
 import pe.com.dswii.Asistencia.persistence.mapper.UserMapper;
@@ -22,32 +20,32 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService {
+
     private final UsuarioRepository usuarioRepository;
+
     private final LoginDetalleRepository loginDetalleRepository;
+
     private final UserTypeService userTypeService;
+
     private final PersonService personService;
+
     private final UserMapper mapper;
+
     private final AuthenticationManager authenticationManager;
+
     private final PasswordEncoder passwordEncoder;
+
     private final JwtGenerator jwtGenerator;
-    public UserService(UsuarioRepository usuarioRepository, LoginDetalleRepository loginDetalleRepository,
-                       PersonService personService, UserMapper mapper,
-                       AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder,
-                       JwtGenerator jwtGenerator, UserTypeService userTypeService){
-        this.usuarioRepository = usuarioRepository;
-        this.loginDetalleRepository = loginDetalleRepository;
-        this.userTypeService = userTypeService;
-        this.personService = personService;
-        this.mapper = mapper;
-        this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtGenerator = jwtGenerator;
-    }
+
+    private final UserTypeMenuService userTypeMenuService;
+
     public List<User> getAll(){
         return usuarioRepository.getAll();
     }
@@ -123,7 +121,12 @@ public class UserService {
         String name = u.getObjPerson().getPersonName();
         String lastname1 = u.getObjPerson().getPersonLastname1();
         String lastname2 = u.getObjPerson().getPersonLastname2();
-
+        String email = u.getObjPerson().getPersonEmail();
+        List<UserTypeMenu> types = userTypeMenuService.getRolesByUserType(u.getUsertype()).orElse(null);
+        List<MenuD> menus = new ArrayList<>();
+        for(UserTypeMenu type: types){
+            menus.add(type.getMenu());
+        }
         //Detalle de Login
         int userId = u.getUserId();
         LoginDetail loginDetail = new LoginDetail();
@@ -132,6 +135,6 @@ public class UserService {
         loginDetail.setTimeLoginDetail(LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
         loginDetalleRepository.save(loginDetail);
 
-        return new DtoAuthResponse(token, username , userId, name, lastname1, lastname2);
+        return new DtoAuthResponse(token, userId,username ,  name, lastname1, lastname2, email, menus);
     }
 }
