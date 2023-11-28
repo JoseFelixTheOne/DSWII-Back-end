@@ -8,6 +8,9 @@ import pe.com.dswii.Asistencia.persistence.crud.HorarioCrudRepository;
 import pe.com.dswii.Asistencia.persistence.entity.Horario;
 import pe.com.dswii.Asistencia.persistence.mapper.ScheduleMapper;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 @AllArgsConstructor
 public class HorarioRepository implements ScheduleRepository {
@@ -17,12 +20,12 @@ public class HorarioRepository implements ScheduleRepository {
     public Schedule save(Schedule schedule) {
         Horario horario = mapper.toHorario(schedule);
         horario.getDetalles().forEach(detalle -> detalle.setHorario(horario));
-        System.out.println(horario);
         Horario registrado = horarioCrudRepository.save(horario);
-        System.out.println(registrado);
-        System.out.println(registrado.getObjCurso());
-        System.out.println(registrado.getObjSeccion());
-        System.out.println(registrado.getObjPersona());
         return mapper.toSchedule(registrado);
+    }
+
+    @Override
+    public Optional<List<Schedule>> getByProfessorId(Integer professorId) {
+        return horarioCrudRepository.findAllByIdProfesor(professorId).map(mapper::toSchedules);
     }
 }

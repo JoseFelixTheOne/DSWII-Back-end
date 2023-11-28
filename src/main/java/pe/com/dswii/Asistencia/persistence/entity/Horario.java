@@ -15,7 +15,7 @@ import java.util.List;
 public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_horario")
+    @Column(name = "id")
     private Integer idHorario;
     @Column(name = "id_curso")
     private Integer idCurso;
@@ -28,15 +28,15 @@ public class Horario {
 
     @ManyToOne
     @JoinColumn(name = "id_curso", insertable = false, updatable = false)
-    private Curso objCurso;
+    private Curso curso;
 
     @ManyToOne
     @JoinColumn(name = "id_seccion", insertable = false, updatable = false)
-    private Seccion objSeccion;
+    private Seccion seccion;
 
     @ManyToOne
     @JoinColumn(name = "id_profesor", referencedColumnName = "id_persona", insertable = false, updatable = false)
-    private Persona objPersona;
+    private Persona persona;
 
     @OneToMany(mappedBy = "horario", cascade = {CascadeType.ALL})
     private List<DetalleHorario> detalles;

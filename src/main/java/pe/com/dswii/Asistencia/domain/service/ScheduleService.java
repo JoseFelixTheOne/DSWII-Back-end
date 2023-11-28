@@ -11,6 +11,7 @@ import pe.com.dswii.Asistencia.domain.repository.ScheduleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,5 +31,8 @@ public class ScheduleService {
         }
         schedule.setDetails(details);
         return  scheduleRepository.save(schedule);
+    }
+    public Optional<List<Schedule>> getByProfessorId(Integer teacherId) {
+        return scheduleRepository.getByProfessorId(teacherId);
     }
 }

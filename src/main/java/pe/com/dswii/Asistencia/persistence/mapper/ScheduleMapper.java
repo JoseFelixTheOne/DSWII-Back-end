@@ -17,16 +17,16 @@ public interface ScheduleMapper {
     @Mapping(source = "idProfesor", target = "teacherId")
     @Mapping(source = "activoHorario", target = "scheduleActive")
     @Mapping(source = "detalles", target = "details")
-    @Mapping(source = "objCurso", target = "objCourse")
-    @Mapping(source = "objSeccion", target = "objSection")
-    @Mapping(source = "objPersona", target = "objPerson")
+    @Mapping(source = "curso", target = "course")
+    @Mapping(source = "seccion", target = "section")
+    @Mapping(source = "persona", target = "person")
     Schedule toSchedule(Horario horario);
 
     List<Schedule> toSchedules(List<Horario> horarios);
 
     @InheritInverseConfiguration
-    @Mapping(target = "objCurso", ignore = true)
-    @Mapping(target = "objSeccion", ignore = true)
-    @Mapping(target = "objPersona", ignore = true)
+    @Mapping(target = "curso", ignore = true)
+    @Mapping(target = "seccion", ignore = true)
+    @Mapping(target = "persona", ignore = true)
     Horario toHorario(Schedule schedule);
 }
