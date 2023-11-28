@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_horario")
 @Getter
@@ -33,4 +35,7 @@ public class Horario {
     @ManyToOne
     @JoinColumn(name = "id_profesor", insertable = false, updatable = false)
     private Persona objPersona;
+
+    @OneToMany(mappedBy = "horario", cascade = {CascadeType.ALL})
+    private List<DetalleHorario> detalles;
 }
