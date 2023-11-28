@@ -9,10 +9,10 @@ import java.util.List;
 @Setter
 public class Schedule {
 
-    private int scheduleId;
-    private int courseId;
-    private int sectionId;
-    private int teacherId;
+    private Integer scheduleId;
+    private Integer courseId;
+    private Integer sectionId;
+    private Integer teacherId;
     private String scheduleActive = "A";
 /*
     private Course objCourse;
