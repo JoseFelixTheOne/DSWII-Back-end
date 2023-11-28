@@ -17,6 +17,9 @@ public interface ScheduleMapper {
     @Mapping(source = "idProfesor", target = "teacherId")
     @Mapping(source = "activoHorario", target = "scheduleActive")
     @Mapping(source = "detalles", target = "details")
+    @Mapping(source = "objCurso", target = "objCourse")
+    @Mapping(source = "objSeccion", target = "objSection")
+    @Mapping(source = "objPersona", target = "objPerson")
     Schedule toSchedule(Horario horario);
 
     List<Schedule> toSchedules(List<Horario> horarios);

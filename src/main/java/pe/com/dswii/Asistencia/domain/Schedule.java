@@ -14,10 +14,8 @@ public class Schedule {
     private Integer sectionId;
     private Integer teacherId;
     private String scheduleActive = "A";
-/*
     private Course objCourse;
     private Section objSection;
     private Person objPerson;
- */
     private List<ScheduleDetail> details;
 }

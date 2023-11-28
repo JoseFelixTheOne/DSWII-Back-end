@@ -17,6 +17,12 @@ public class HorarioRepository implements ScheduleRepository {
     public Schedule save(Schedule schedule) {
         Horario horario = mapper.toHorario(schedule);
         horario.getDetalles().forEach(detalle -> detalle.setHorario(horario));
-        return mapper.toSchedule(horarioCrudRepository.save(horario));
+        System.out.println(horario);
+        Horario registrado = horarioCrudRepository.save(horario);
+        System.out.println(registrado);
+        System.out.println(registrado.getObjCurso());
+        System.out.println(registrado.getObjSeccion());
+        System.out.println(registrado.getObjPersona());
+        return mapper.toSchedule(registrado);
     }
 }

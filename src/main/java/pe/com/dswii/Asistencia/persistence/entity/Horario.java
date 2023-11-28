@@ -3,6 +3,7 @@ package pe.com.dswii.Asistencia.persistence.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -10,17 +11,18 @@ import java.util.List;
 @Table(name = "tb_horario")
 @Getter
 @Setter
+@ToString
 public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario")
-    private int idHorario;
+    private Integer idHorario;
     @Column(name = "id_curso")
-    private int idCurso;
+    private Integer idCurso;
     @Column(name = "id_seccion")
-    private int idSeccion;
+    private Integer idSeccion;
     @Column(name = "id_profesor")
-    private int idProfesor;
+    private Integer idProfesor;
     @Column(name = "activo")
     private String activoHorario;
 
@@ -33,7 +35,7 @@ public class Horario {
     private Seccion objSeccion;
 
     @ManyToOne
-    @JoinColumn(name = "id_profesor", insertable = false, updatable = false)
+    @JoinColumn(name = "id_profesor", referencedColumnName = "id_persona", insertable = false, updatable = false)
     private Persona objPersona;
 
     @OneToMany(mappedBy = "horario", cascade = {CascadeType.ALL})
