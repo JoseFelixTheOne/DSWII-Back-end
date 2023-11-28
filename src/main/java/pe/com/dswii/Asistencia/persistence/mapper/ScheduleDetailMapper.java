@@ -15,7 +15,7 @@ public interface ScheduleDetailMapper {
     @Mapping(source = "idAlumno", target = "studentId")
     @Mapping(source = "activo", target = "active")
     ScheduleDetail toDetail(DetalleHorario detalle);
-    List<ScheduleMapper> toDetails(List<DetalleHorario> detalles);
+    List<ScheduleDetail> toDetails(List<DetalleHorario> detalles);
 
     @InheritInverseConfiguration
     @Mapping(target = "horario", ignore = true)
