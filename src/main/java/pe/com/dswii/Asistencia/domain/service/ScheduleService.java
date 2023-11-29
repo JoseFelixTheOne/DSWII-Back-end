@@ -42,7 +42,20 @@ public class ScheduleService {
     }
     public List<Schedule> getAll() {return scheduleRepository.getAll();}
 
-    public List<ScheduleDetail> getByScheduleId(Integer scheduleId) {
-        return scheduleRepository.getByScheduleId(scheduleId);
+    public List<ScheduleDetailDTO> getByScheduleId(Integer scheduleId) {
+        List<ScheduleDetail> scheduleDetail = scheduleRepository.getByScheduleId(scheduleId);
+        List<ScheduleDetailDTO> scheduleDetailDTO = new ArrayList<>();
+
+        for (ScheduleDetail detail : scheduleDetail) {
+            ScheduleDetailDTO detailDTO = new ScheduleDetailDTO();
+            detailDTO.setId(detail.getDetailId());
+            detailDTO.setStudentId(detail.getStudentId());
+            detailDTO.setPersonEmail(detail.getStudent().getPersonEmail());
+            detailDTO.setPersonName(detail.getStudent().getPersonName());
+            detailDTO.setPersonLastname1(detail.getStudent().getPersonLastname1());
+            detailDTO.setPersonLastname2(detail.getStudent().getPersonLastname2());
+            scheduleDetailDTO.add(detailDTO);
+        }
+        return scheduleDetailDTO;
     }
 }
