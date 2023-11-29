@@ -1,6 +1,8 @@
 package pe.com.dswii.Asistencia.domain.repository;
 
 import pe.com.dswii.Asistencia.domain.Schedule;
+import pe.com.dswii.Asistencia.domain.ScheduleDetail;
+import pe.com.dswii.Asistencia.domain.ScheduleDetailDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,4 +12,5 @@ public interface ScheduleRepository {
     Optional<List<Schedule>> getByProfessorId(Integer professorId);
     Optional<Schedule> getById(Integer id);
     List<Schedule> getAll();
+    List<ScheduleDetail> getByScheduleId(Integer scheduleId);
 }

@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface HorarioCrudRepository extends JpaRepository<Horario, Integer> {
 
-    @Query(value = "SELECT * FROM horario WHERE id_profesor = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_horario WHERE id_profesor = ?1", nativeQuery = true)
     Optional<List<Horario>> findAllByIdProfesor(Integer idprofesor);
 }

@@ -1,13 +1,19 @@
 package pe.com.dswii.Asistencia.persistence;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import pe.com.dswii.Asistencia.domain.Schedule;
+import pe.com.dswii.Asistencia.domain.ScheduleDetail;
+import pe.com.dswii.Asistencia.domain.ScheduleDetailDTO;
 import pe.com.dswii.Asistencia.domain.repository.ScheduleRepository;
+import pe.com.dswii.Asistencia.persistence.crud.DetalleHorarioCrudRepository;
 import pe.com.dswii.Asistencia.persistence.crud.HorarioCrudRepository;
 import pe.com.dswii.Asistencia.persistence.entity.Horario;
+import pe.com.dswii.Asistencia.persistence.mapper.ScheduleDetailMapper;
 import pe.com.dswii.Asistencia.persistence.mapper.ScheduleMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +21,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HorarioRepository implements ScheduleRepository {
     private final HorarioCrudRepository horarioCrudRepository;
+    private final DetalleHorarioCrudRepository detalleHorarioCrudRepository;
     private final ScheduleMapper mapper;
+    private final ScheduleDetailMapper detailMapper;
     @Override
     public Schedule save(Schedule schedule) {
         Horario horario = mapper.toHorario(schedule);
@@ -37,5 +45,11 @@ public class HorarioRepository implements ScheduleRepository {
     @Override
     public List<Schedule> getAll() {
         return mapper.toSchedules(horarioCrudRepository.findAll());
+    }
+
+    @Override
+    public List<ScheduleDetail> getByScheduleId(Integer scheduleId) {
+        List<ScheduleDetail> scheduleDetail = detailMapper.toDetails(detalleHorarioCrudRepository.getByScheduleId(scheduleId).get());
+        return scheduleDetail;
     }
 }

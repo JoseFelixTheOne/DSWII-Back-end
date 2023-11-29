@@ -8,5 +8,10 @@ import lombok.Setter;
 @Setter
 public class ScheduleDetailDTO {
 
-    private int personId;
+    private int id;
+    private int studentId;
+    private String personEmail;
+    private String personName;
+    private String personLastname1;
+    private String personLastname2;
 }
