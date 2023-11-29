@@ -12,7 +12,7 @@ public class Seccion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_seccion")
-    private int id;
+    private Integer id;
     @Column(name = "nombre_seccion")
     private String nombreSeccion;
     @Column(name = "ciclo_seccion")
