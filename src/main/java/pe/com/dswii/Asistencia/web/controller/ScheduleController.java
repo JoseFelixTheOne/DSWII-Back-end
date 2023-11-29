@@ -45,19 +45,6 @@ public class ScheduleController {
 
     @GetMapping("/detail/{scheduleId}")
     public ResponseEntity<List<ScheduleDetailDTO>> getDetailByScheduleId(@PathVariable int scheduleId) {
-        List<ScheduleDetail> scheduleDetail = scheduleService.getByScheduleId(scheduleId);
-        List<ScheduleDetailDTO> scheduleDetailDTO = new ArrayList<>();
-
-        for (ScheduleDetail detail : scheduleDetail) {
-            ScheduleDetailDTO detailDTO = new ScheduleDetailDTO();
-            detailDTO.setId(detail.getDetailId());
-            detailDTO.setStudentId(detail.getStudentId());
-            detailDTO.setPersonEmail(detail.getStudent().getPersonEmail());
-            detailDTO.setPersonName(detail.getStudent().getPersonName());
-            detailDTO.setPersonLastname1(detail.getStudent().getPersonLastname1());
-            detailDTO.setPersonLastname2(detail.getStudent().getPersonLastname2());
-            scheduleDetailDTO.add(detailDTO);
-        }
-        return new ResponseEntity(scheduleDetailDTO, HttpStatus.OK);
+        return new ResponseEntity(scheduleService.getByScheduleId(scheduleId), HttpStatus.OK);
     }
 }
