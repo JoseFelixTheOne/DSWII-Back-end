@@ -8,12 +8,13 @@ import pe.com.dswii.Asistencia.persistence.entity.DetalleHorario;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {PersonMapper.class})
 public interface ScheduleDetailMapper {
 
     @Mapping(source = "id.id", target = "detailId")
     @Mapping(source = "idAlumno", target = "studentId")
     @Mapping(source = "activo", target = "active")
+    @Mapping(source = "alumno", target = "student")
     ScheduleDetail toDetail(DetalleHorario detalle);
     List<ScheduleDetail> toDetails(List<DetalleHorario> detalles);
 
