@@ -119,6 +119,7 @@ public class UserService {
         String username = jwtGenerator.obtenerUsernameDeJwt(token);
         User u = usuarioRepository.getByUsername(username).get();
         String name = u.getObjPerson().getPersonName();
+        int idperson = u.getPersonId();
         String lastname1 = u.getObjPerson().getPersonLastname1();
         String lastname2 = u.getObjPerson().getPersonLastname2();
         String email = u.getObjPerson().getPersonEmail();
@@ -135,6 +136,6 @@ public class UserService {
         loginDetail.setTimeLoginDetail(LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
         loginDetalleRepository.save(loginDetail);
 
-        return new DtoAuthResponse(token, userId,username ,  name, lastname1, lastname2, email, menus);
+        return new DtoAuthResponse(token, userId,username, name, idperson, lastname1, lastname2, email, menus);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.dswii.Asistencia.domain.Schedule;
 import pe.com.dswii.Asistencia.domain.ScheduleDTO;
 import pe.com.dswii.Asistencia.domain.ScheduleDetail;
+import pe.com.dswii.Asistencia.domain.ScheduleDetailDTO;
 import pe.com.dswii.Asistencia.domain.repository.ScheduleRepository;
 
 import java.util.ArrayList;
@@ -40,4 +41,8 @@ public class ScheduleService {
         return scheduleRepository.getById(id);
     }
     public List<Schedule> getAll() {return scheduleRepository.getAll();}
+
+    public List<ScheduleDetail> getByScheduleId(Integer scheduleId) {
+        return scheduleRepository.getByScheduleId(scheduleId);
+    }
 }
