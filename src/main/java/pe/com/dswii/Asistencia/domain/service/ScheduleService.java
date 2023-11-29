@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.dswii.Asistencia.domain.Schedule;
 import pe.com.dswii.Asistencia.domain.dto.ScheduleDTO;
 import pe.com.dswii.Asistencia.domain.ScheduleDetail;
+import pe.com.dswii.Asistencia.domain.dto.ScheduleDetailDTO;
 import pe.com.dswii.Asistencia.domain.repository.ScheduleRepository;
 
 import java.util.ArrayList;
