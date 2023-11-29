@@ -34,7 +34,7 @@ public class ScheduleController {
         return ResponseEntity.of(scheduleService.getById(id));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Schedule> getAll() {
         return scheduleService.getAll();
