@@ -12,5 +12,5 @@ public class ScheduleDTO {
     private Integer sectionId;
     private Integer teacherId;
     @NotNull(message = "needs 1 or more studentId")
-    private Integer students[];
+    private Integer[] students;
 }
