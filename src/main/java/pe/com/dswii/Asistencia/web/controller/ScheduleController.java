@@ -32,19 +32,14 @@ public class ScheduleController {
         return ResponseEntity.of(scheduleService.getByProfessorId(teacherId));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Schedule> getById(@PathVariable Integer id) {
-        return ResponseEntity.of(scheduleService.getById(id));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Schedule> getAll() {
         return scheduleService.getAll();
     }
 
-    @GetMapping("/detail/{scheduleId}")
+    @GetMapping("{scheduleId}")
     public ResponseEntity<List<ScheduleDetailDTO>> getDetailByScheduleId(@PathVariable int scheduleId) {
-        return new ResponseEntity(scheduleService.getByScheduleId(scheduleId), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.getByScheduleId(scheduleId), HttpStatus.OK);
     }
 }
