@@ -11,8 +11,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class DetalleHorarioPK implements Serializable {
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_detalle")
+    private Integer idDetalle;
     @Column(name = "id_horario")
     private Integer idHorario;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {PersonMapper.class})
 public interface ScheduleDetailMapper {
 
-    @Mapping(source = "id.id", target = "detailId")
+    @Mapping(source = "id.idDetalle", target = "detailId")
     @Mapping(source = "idAlumno", target = "studentId")
     @Mapping(source = "activo", target = "active")
     @Mapping(source = "alumno", target = "student")
