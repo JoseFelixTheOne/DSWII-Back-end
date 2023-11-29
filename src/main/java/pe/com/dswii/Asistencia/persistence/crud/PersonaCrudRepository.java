@@ -14,7 +14,7 @@ public interface PersonaCrudRepository extends JpaRepository<Persona, Integer> {
     Optional<List<Persona>> findAllInactive();
     @Query(value = "SELECT * FROM tb_persona WHERE activo_persona = 'A' AND btieneusuario_persona = FALSE", nativeQuery = true)
     Optional<List<Persona>> findAllWithoutUser();
-    @Query(value = "SELECT * FROM tb_persona WHERE activo_persona = 'A' AND nombre_persona LIKE %:name% OR appaterno_persona LIKE %:nombre% OR apmaterno_persona LIKE %:nombre%", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_persona WHERE activo_persona = 'A' AND nombre_persona LIKE %:name% OR appaterno_persona LIKE %:name% OR apmaterno_persona LIKE %:name%", nativeQuery = true)
     Optional<List<Persona>> findByNombrePersona(@Param("name") String name);
     @Query(value = "SELECT * FROM tb_persona WHERE activo_persona = 'A' AND correo_persona LIKE %:email%", nativeQuery = true)
     Optional<List<Persona>> findByCorreoPersona(@Param("email") String email);

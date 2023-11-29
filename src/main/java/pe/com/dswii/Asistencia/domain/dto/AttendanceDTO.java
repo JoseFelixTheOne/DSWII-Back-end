@@ -10,5 +10,4 @@ public class AttendanceDTO {
     private Integer scheduleId;
     private String title;
     private Integer userId;
-    pre
 }

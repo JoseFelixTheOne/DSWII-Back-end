@@ -13,15 +13,17 @@ public class DtoAuthResponse {
     private int userId;
     private String username;
     private String name;
+    private int idperson;
     private String lastname1;
     private String lastname2;
     private String email;
     private List<MenuD> menus;
-    public DtoAuthResponse(String accessToken,  int userId, String username, String name, String lastname1, String lastname2, String email, List<MenuD> menus){
+    public DtoAuthResponse(String accessToken,  int userId, String username, String name, int idperson, String lastname1, String lastname2, String email, List<MenuD> menus){
         this.accessToken = accessToken;
         this.username = username;
         this.userId = userId;
         this.name = name;
+        this.idperson = idperson;
         this.lastname1 = lastname1;
         this.lastname2 = lastname2;
         this.email = email;

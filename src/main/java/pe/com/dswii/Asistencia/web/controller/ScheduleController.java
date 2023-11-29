@@ -7,8 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.dswii.Asistencia.domain.Schedule;
 import pe.com.dswii.Asistencia.domain.dto.ScheduleDTO;
+import pe.com.dswii.Asistencia.domain.ScheduleDetail;
+import pe.com.dswii.Asistencia.domain.dto.ScheduleDetailDTO;
 import pe.com.dswii.Asistencia.domain.service.ScheduleService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,9 +37,27 @@ public class ScheduleController {
         return ResponseEntity.of(scheduleService.getById(id));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Schedule> getAll() {
         return scheduleService.getAll();
+    }
+
+    @GetMapping("/detail/{scheduleId}")
+    public ResponseEntity<List<ScheduleDetailDTO>> getDetailByScheduleId(@PathVariable int scheduleId) {
+        List<ScheduleDetail> scheduleDetail = scheduleService.getByScheduleId(scheduleId);
+        List<ScheduleDetailDTO> scheduleDetailDTO = new ArrayList<>();
+
+        for (ScheduleDetail detail : scheduleDetail) {
+            ScheduleDetailDTO detailDTO = new ScheduleDetailDTO();
+            detailDTO.setId(detail.getDetailId());
+            detailDTO.setStudentId(detail.getStudentId());
+            detailDTO.setPersonEmail(detail.getStudent().getPersonEmail());
+            detailDTO.setPersonName(detail.getStudent().getPersonName());
+            detailDTO.setPersonLastname1(detail.getStudent().getPersonLastname1());
+            detailDTO.setPersonLastname2(detail.getStudent().getPersonLastname2());
+            scheduleDetailDTO.add(detailDTO);
+        }
+        return new ResponseEntity(scheduleDetailDTO, HttpStatus.OK);
     }
 }

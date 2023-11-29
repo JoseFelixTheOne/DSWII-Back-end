@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ScheduleDTO {
+
     private Integer courseId;
     private Integer sectionId;
     private Integer teacherId;

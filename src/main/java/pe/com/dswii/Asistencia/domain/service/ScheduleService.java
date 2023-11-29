@@ -40,4 +40,8 @@ public class ScheduleService {
         return scheduleRepository.getById(id);
     }
     public List<Schedule> getAll() {return scheduleRepository.getAll();}
+
+    public List<ScheduleDetail> getByScheduleId(Integer scheduleId) {
+        return scheduleRepository.getByScheduleId(scheduleId);
+    }
 }
