@@ -1,4 +1,4 @@
-package pe.com.dswii.Asistencia.domain;
+package pe.com.dswii.Asistencia.domain.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

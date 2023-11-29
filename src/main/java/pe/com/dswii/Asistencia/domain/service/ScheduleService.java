@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.com.dswii.Asistencia.domain.Schedule;
-import pe.com.dswii.Asistencia.domain.ScheduleDTO;
+import pe.com.dswii.Asistencia.domain.dto.ScheduleDTO;
 import pe.com.dswii.Asistencia.domain.ScheduleDetail;
 import pe.com.dswii.Asistencia.domain.repository.ScheduleRepository;
 
