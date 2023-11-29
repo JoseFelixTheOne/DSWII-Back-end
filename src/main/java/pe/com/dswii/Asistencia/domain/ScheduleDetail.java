@@ -9,4 +9,5 @@ public class ScheduleDetail {
     private Integer detailId;
     private Integer studentId;
     private String active = "A";
+    private Person student;
 }
