@@ -1,11 +1,16 @@
 package pe.com.dswii.Asistencia.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_asistencia")
+@Getter
+@Setter
 public class Asistencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +30,7 @@ public class Asistencia {
     @ManyToOne
     @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "asistencia", cascade = {CascadeType.ALL})
+    private List<DetalleAsistencia> detalles;
 }
