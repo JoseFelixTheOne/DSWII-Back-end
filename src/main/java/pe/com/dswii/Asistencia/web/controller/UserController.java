@@ -97,6 +97,7 @@ public class UserController {
     //Logueo y Generación de Token
     @PostMapping("/login")
     public ResponseEntity<DtoAuthResponse> login(@RequestBody DtoLogin dtoLogin){
+        System.out.println(dtoLogin.getUsername() + " " + dtoLogin.getPassword());
         return new ResponseEntity<>(userService.login(dtoLogin.getUsername(), dtoLogin.getPassword()), HttpStatus.OK);
     }
     //Actualización de Usuario

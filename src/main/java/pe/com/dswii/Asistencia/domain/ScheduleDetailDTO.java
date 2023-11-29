@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class ScheduleDetailDTO {
 
-    private int personId
+    private int personId;
 }
