@@ -2,6 +2,8 @@
 Este proyecto consiste en una API REST desarrollada en Spring Boot 3 con Java 17, utilizando Gradle, que proporciona servicios para gestionar asistencias para el curso de Desarrollo de Servicios Web 2 en Cibertec. 
 La API permite llevar un registro de asistencias, gestión de estudiantes y demás funcionalidades relacionadas con el control de asistencias en el curso, utilizando una base de datos MySQL.
 
+Proyecto base: https://github.com/Hapvale12/DSWII-Back-end
+
 ## Requisitos Previos
 Antes de comenzar, asegúrate de tener instalado:
 
